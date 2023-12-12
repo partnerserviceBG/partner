@@ -1,12 +1,19 @@
 const {Router} = require("express");
 const router = new Router()
-const postController = require('../controllers/post.controller')
+const postsController = require('../controllers/posts.controller')
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const authMiddleware = require('../middleware/auth.middleware')
 
 
-router.post('/', postController.create)
-router.get('/', postController.getAll)
-router.get('/:id', postController.getOne)
-router.put('/:id', postController.updatePost)
-router.delete('/:id', postController.deletePost)
+// Маршруты для операций CRUD с постами
+router.get('/', postsController.getAllPosts);
+router.get('/:id', postsController.getPostById);
+router.post('/', authMiddleware, upload.single('photo'), postsController.createPost);
+router.put('/:id', authMiddleware, postsController.updatePost);
+router.delete('/:id', authMiddleware, postsController.deletePost);
+
+// Маршрут для загрузки фотографии в пост
+router.post('/:id/photo', authMiddleware, upload.single('photo'), postsController.uploadPhoto);
 
 module.exports = router

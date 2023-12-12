@@ -1,21 +1,26 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const bcrypt = require("bcrypt");
 
 const Post = sequelize.define('post', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
     content: {type: DataTypes.TEXT, allowNull: false},
-    photo: {type: DataTypes.STRING, allowNull: true}
+    photo: {type: DataTypes.BLOB, allowNull: true},
+    userId:{type: DataTypes.INTEGER, allowNull: false},
 });
 
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    email: {type: DataTypes.STRING, unique: true,},
+    email: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
-    role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-Post.belongsTo(User)
+User.beforeCreate(async (user) => {
+    user.password = bcrypt.hashSync(user.password, 10);
+});
+
 User.hasMany(Post);
+Post.belongsTo(User)
 
 module.exports = {Post, User}
