@@ -13,7 +13,14 @@ const Post = sequelize.define('post', {
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true},
-    password: {type: DataTypes.STRING},
+    password: {type: DataTypes.STRING, allowNull: false},
+    isActivated: {type: DataTypes.BOOLEAN, allowNull: true},
+    activationLink: {type: DataTypes.STRING},
+})
+
+const Token = sequelize.define('token', {
+    byUser: {type: DataTypes.INTEGER, references: { model: User, key: 'id' }},
+    refreshToken: {type: DataTypes.STRING, require: true}
 })
 
 User.beforeCreate(async (user) => {
@@ -22,5 +29,6 @@ User.beforeCreate(async (user) => {
 
 User.hasMany(Post);
 Post.belongsTo(User)
+Token.belongsTo(User)
 
-module.exports = {Post, User}
+module.exports = {Post, User, Token}

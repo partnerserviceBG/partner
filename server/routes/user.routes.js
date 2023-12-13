@@ -4,6 +4,8 @@ const userController = require('../controllers/user.controller')
 const authMiddleware = require('../middleware/auth.middleware')
 
 router.post('/login', userController.login)
-router.get('/auth', authMiddleware, userController.check)
+router.post('/logout',authMiddleware, userController.logout)
+router.get('/refresh',authMiddleware, userController.refresh);
+router.get('/', authMiddleware, userController.getUsers);
 
 module.exports = router

@@ -8,6 +8,6 @@ const userRouter = require('./user.routes');
 
 router.use('/posts', postRouter);
 router.use('/houses', housesRouter);
-router.use('/user', userRouter)
+router.use('/users', userRouter)
 
 module.exports = router;
