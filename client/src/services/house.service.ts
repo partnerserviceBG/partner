@@ -1,4 +1,4 @@
-import { Post } from '../models/Post';
+import { Post } from '@models/Post';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const housesApi = createApi({
@@ -8,11 +8,11 @@ export const housesApi = createApi({
   endpoints: (build) => ({
     getHouses: build.query<Post[], void>({
       query: () => 'houses',
-      providesTags: (result) => ['Houses'],
+      providesTags: () => ['Houses'],
     }),
     getHouse: build.query<Post, number>({
       query: (id) => `houses/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Houses', id }],
+      providesTags: () => [{ type: 'Houses'}],
     }),
   }),
 });

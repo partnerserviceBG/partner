@@ -1,15 +1,10 @@
-import localStorageService from '../../services/localStorage.service';
-import {
-  BaseQueryApi,
-  BaseQueryFn,
-  FetchArgs,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
-import { User } from '../../models/User';
+import localStorageService from '@services/localStorage.service';
+import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import { User } from '@models/User';
+import { environments } from '@environments/environments';
 
 const baseQueryAuth = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/api/',
+  baseUrl: environments.baseUrl,
   prepareHeaders: (headers) => {
     const token = localStorageService.getAccessToken();
     if (token) {

@@ -1,6 +1,6 @@
-import { Post } from '../models/Post';
+import { Post } from '@models/Post';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReAuth } from '../store/utils/baseQueryAuth';
+import { baseQueryWithReAuth } from '@store/utils/baseQueryAuth';
 
 export const postsApi = createApi({
   reducerPath: 'postsApi',
@@ -9,11 +9,11 @@ export const postsApi = createApi({
   endpoints: (build) => ({
     getPosts: build.query<Post[], void>({
       query: () => 'posts',
-      providesTags: (result) => ['Posts'],
+      providesTags: () => ['Posts'],
     }),
     getPost: build.query<Post, string>({
       query: (id) => `posts/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Posts', id }],
+      providesTags: () => [{ type: 'Posts'}],
     }),
     addPost: build.mutation<Post, Partial<Post>>({
       query: (body) => ({
