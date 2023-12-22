@@ -13,7 +13,7 @@ export const postsApi = createApi({
     }),
     getPost: build.query<Post, string>({
       query: (id) => `posts/${id}`,
-      providesTags: () => [{ type: 'Posts'}],
+      providesTags: () => [{ type: 'Posts' }],
     }),
     addPost: build.mutation<Post, Partial<Post>>({
       query: (body) => ({
@@ -43,4 +43,5 @@ export const postsApi = createApi({
   }),
 });
 
-export const { useGetPostsQuery, useAddPostMutation, useUpdatePostMutation, useDeletePostMutation } = postsApi;
+export const { useGetPostsQuery, useGetPostQuery, useAddPostMutation, useUpdatePostMutation, useDeletePostMutation } =
+  postsApi;
