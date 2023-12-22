@@ -1,15 +1,18 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { RoutesNavType } from '@routes/router';
+import { useAuth } from '@hooks/useAuth.ts';
 
 type NavListProps = {
   label?: string;
   direction?: 'row' | 'column';
   routes: RoutesNavType[];
+  logOut?: (id: number) => void;
   [x: string]: any;
 };
 
-export const NavList: React.FC<NavListProps> = ({ label, routes, direction = 'row', ...rest }) => {
+export const NavList: React.FC<NavListProps> = ({ label, routes, direction = 'row', logOut, ...rest }) => {
+  const { user } = useAuth();
   return (
     <nav {...rest}>
       {label && <h3>{label}</h3>}
@@ -21,6 +24,7 @@ export const NavList: React.FC<NavListProps> = ({ label, routes, direction = 'ro
             </NavLink>
           </li>
         ))}
+        {user && <button onClick={() => logOut && logOut(user.id)}>logout</button>}
       </ul>
     </nav>
   );

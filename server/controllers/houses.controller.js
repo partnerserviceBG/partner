@@ -22,6 +22,7 @@ class HousesController {
       .get(`https://api.rias-gkh.ru/v2.0/houses/${req.params.id}`, {
         params: {
           "access-token": "a4a6a69cd5e5506fa64d",
+          expand: "entrances",
         },
       })
       .then((response) => {

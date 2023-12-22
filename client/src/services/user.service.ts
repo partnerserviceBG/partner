@@ -1,40 +1,32 @@
-import { User } from '@models/User';
-import localStorageService from './localStorage.service';
+import { UserDto } from '@models/User';
 
 import { createApi } from '@reduxjs/toolkit/query/react';
+
 // @ts-ignore
 import { SignInDataType } from '@types/SignInDataType';
 import { baseQueryWithReAuth } from '@store/utils/baseQueryAuth';
+import { useLocalStorageByAuth } from '@hooks/useLocalStorageByAuth.ts';
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: baseQueryWithReAuth,
   tagTypes: ['Users'],
   endpoints: (build) => ({
-    login: build.mutation<User, SignInDataType>({
+    login: build.mutation<UserDto, SignInDataType>({
       query: (body) => ({
         url: `/users/login`,
         method: 'POST',
         body,
       }),
-      transformResponse: (data: User) => {
-        if (data) {
-          const { accessToken, refreshToken, user } = data;
-          const { id } = user;
-          localStorageService.setTokens({ accessToken, refreshToken, userId: id });
-        }
-        return data;
-      },
-      invalidatesTags: [{ type: 'Users' }],
     }),
     logout: build.mutation({
-      query: () => ({
-        url: `/users/logout`,
-        method: 'POST',
-        body: { refreshToken: localStorageService.getRefreshToken() },
-      }),
-      transformResponse: () => {
-        localStorageService.removeAuthData();
+      query: () => {
+        const { getRefreshToken } = useLocalStorageByAuth();
+        return {
+          url: `/users/logout`,
+          method: 'POST',
+          body: { refreshToken: getRefreshToken() },
+        };
       },
       invalidatesTags: [{ type: 'Users' }],
     }),

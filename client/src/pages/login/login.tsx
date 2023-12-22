@@ -2,17 +2,25 @@ import { Avatar, Box, Button, Container, TextField, Typography } from '@mui/mate
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useLoginMutation } from '@services/user.service';
 import { useNavigate } from 'react-router-dom';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useAuth } from '@hooks/useAuth.ts';
 
 export const Login: FC = (): JSX.Element => {
-  const [login] = useLoginMutation();
+  const { setAuthData } = useAuth();
+  const [login, { data: value }] = useLoginMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (value) {
+      setAuthData(value);
+      navigate('/admin', { replace: true });
+    }
+  }, [value]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     login({ email: data.get('email') as string, password: data.get('password') as string });
-    navigate('/');
   };
   return (
     <>
