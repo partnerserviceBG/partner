@@ -1,0 +1,57 @@
+@import './variables';
+@import './components/index';
+
+#root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: $text-base-size;
+  color: $dark;
+  position: relative;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: $dark;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  order: 0;
+}
+
+.middle {
+  padding-bottom: 0;
+  flex-grow: 1;
+  order: 1;
+  position: relative;
+}
+
+.footer {
+  order: 2;
+}
+
+.main-section {
+  margin: 70px 0;
+}

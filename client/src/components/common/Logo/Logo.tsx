@@ -1,14 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+// @ts-ignore
+import ImgLogo from '@assets/png/logo.png';
 
-type LogoProps = {
-  className?: string;
-};
-
-export const Logo: React.FC<LogoProps> = ({ className }) => {
+export const Logo: React.FC = () => {
   return (
-    <div className={className}>
-      <NavLink to='/' className='logo-link'></NavLink>
-    </div>
+    <NavLink to='/' className='logo'>
+      <img src={ImgLogo} alt='Логотип' title='УК "Партнёр Сервис"' />
+    </NavLink>
   );
 };

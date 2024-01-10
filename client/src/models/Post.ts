@@ -1,7 +1,7 @@
 export interface Post {
   id: number;
-  title: string;
-  content: string;
-  photo: Blob;
+  title?: string;
+  content?: string;
+  image?: string;
   userId: number;
 }

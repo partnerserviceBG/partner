@@ -1,30 +1,42 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { RoutesNavType } from '@routes/router';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { RoutesNavType } from '@utils/types.ts';
 import { useAuth } from '@hooks/useAuth.ts';
+import { useLogoutMutation } from '@services/user.service.ts';
 
 type NavListProps = {
-  label?: string;
   direction?: 'row' | 'column';
   routes: RoutesNavType[];
-  logOut?: (id: number) => void;
-  [x: string]: any;
 };
 
-export const NavList: React.FC<NavListProps> = ({ label, routes, direction = 'row', logOut, ...rest }) => {
-  const { user } = useAuth();
+export const NavList: React.FC<NavListProps> = ({ routes, direction, ...rest }) => {
+  const { user, removeAuthData } = useAuth();
+  const [logOut] = useLogoutMutation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logOut(user.id);
+    removeAuthData();
+    navigate('/', { replace: true });
+  };
   return (
     <nav {...rest}>
-      {label && <h3>{label}</h3>}
       <ul className='nav-wrapper' style={{ flexDirection: direction }}>
-        {routes.map((route) => (
-          <li key={route.name} className='nav-item'>
-            <NavLink className='nav-item__link' to={route.path}>
-              {route.name}
-            </NavLink>
-          </li>
-        ))}
-        {user && <button onClick={() => logOut && logOut(user.id)}>logout</button>}
+        {routes.map((route) =>
+          route.name === 'Выйти' ? (
+            <li onClick={handleLogout} key={route.name} className='nav-item'>
+              <div className='nav-item__link'>{route.name}</div>
+            </li>
+          ) : (
+            !route.hiddenRoute && (
+              <li key={route.name} className='nav-item'>
+                <NavLink className='nav-item__link' to={route.path}>
+                  {route.name}
+                </NavLink>
+              </li>
+            )
+          )
+        )}
       </ul>
     </nav>
   );

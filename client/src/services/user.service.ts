@@ -2,10 +2,9 @@ import { UserDto } from '@models/User';
 
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-// @ts-ignore
-import { SignInDataType } from '@types/SignInDataType';
 import { baseQueryWithReAuth } from '@store/utils/baseQueryAuth';
 import { useLocalStorageByAuth } from '@hooks/useLocalStorageByAuth.ts';
+import { SignInDataType } from '@utils/types.ts';
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',

@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter } from 'react-router-dom';
-import { theme } from '@styles/theme.ts';
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { store } from '@store/store';
 import App from './App.tsx';
+import { theme } from '@styles/theme.ts';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -13,9 +12,9 @@ root.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <BrowserRouter>
+        <StyledEngineProvider injectFirst>
           <App />
-        </BrowserRouter>
+        </StyledEngineProvider>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>

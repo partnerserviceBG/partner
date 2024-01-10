@@ -1,0 +1,13 @@
+//Common
+@import "../../components/common/NavList/styles/_navList.scss";
+@import "../../components/common/header/styles/_header.scss";
+@import "../../components/common/logo/styles/logo.scss";
+@import "../../components/common/Breadcrumbs/styles/breadcrumbs.scss";
+@import "../../components/common/Footer/styles/footer.scss";
+
+//Layouts
+@import "../../layouts/pages-layout/pagesLayout";
+
+//UI
+@import "../../components/ui/Houses/house-card/styles/houseCard";
+@import "../../components/ui/News/news-card/styles/newsCard";
