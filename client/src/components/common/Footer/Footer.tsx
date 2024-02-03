@@ -1,68 +1,147 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Container, Divider, NavList } from '@components/common';
-import { Box, Grid, Link, Typography } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { Box, Grid, Link, styled, Typography } from '@mui/material';
 import { publicNavigation } from '@routes/navigation/public-navigation.tsx';
-import { useGetOrganisationInfoQuery } from '@services/organisation-info.service.ts';
+import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 
 // @ts-ignore
-import vk from '../../../assets/icons/vk.svg';
+import vk from '@assets/svg/vk.svg';
+import { OrganisationInfo } from '@models/OrganisationInfo.ts';
+import { getShortAddress } from '@utils/utils.ts';
+import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
+
+interface FooterListProps<T> {
+  data: T[];
+}
+
+type LinkType = 'tel' | 'email' | 'location';
+
+const StyledFooter = styled('footer')(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  padding: '65px 0 85px',
+}));
+
+const CompanyBlockStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.light,
+  marginBottom: '10px',
+  '&::before': {
+    content: '"\\00A9"',
+    marginRight: '10px',
+  },
+}));
+
+const LinkStyle = styled(Link)<{ type: LinkType }>(({ theme, type }) => {
+  const defaultLinkStyle = {
+    opacity: 0.8,
+    '&:hover': {
+      textDecoration: 'none',
+      opacity: 0.5,
+    },
+    '&.active': {
+      opacity: 0.5,
+    },
+  };
+  return {
+    transition: 'all 0.2s linear',
+    color: theme.palette.primary.light,
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    ...(type === 'tel' && {
+      ...defaultLinkStyle,
+      '&::before': {
+        content: '"📱"',
+        marginRight: '10px',
+      },
+    }),
+    ...(type === 'email' && {
+      ...defaultLinkStyle,
+      textDecoration: 'underline',
+      '&::before': {
+        content: '"📧"',
+        marginRight: '10px',
+      },
+    }),
+    ...(type === 'location' && {
+      color: '#fff',
+      '&::before': {
+        content: '"🖈"',
+        marginRight: '10px',
+      },
+    }),
+  };
+});
+
+const FooterList: React.FC<FooterListProps<OrganisationInfo>> = ({ data }) => {
+  return useMemo(
+    () => (
+      <>
+        {data.map((el) => {
+          return (
+            <Box
+              key={el.id}
+              sx={{
+                display: 'flex',
+                flexDirection: { tablet: 'column', laptop: 'row', mobile: 'column' },
+                alignItems: 'start',
+                justifyContent: 'space-between',
+              }}
+            >
+              <LinkStyle type='tel' href={`tel:${el.contactPhoneNumber.value}`}>
+                {el.contactPhoneNumber.value}
+              </LinkStyle>
+              <LinkStyle type='email' href={`mailto:${el.email.value}`}>
+                {el.email.value}
+              </LinkStyle>
+              <LinkStyle type='location'>{getShortAddress(el.locationOfControls.value)}</LinkStyle>
+            </Box>
+          );
+        })}
+      </>
+    ),
+    data
+  );
+};
 
 const Footer = () => {
-  const { data } = useGetOrganisationInfoQuery();
+  const { data } = useGetInfoQuery();
 
-  if (data) {
-    const { locationOfControls, email, contactPhoneNumber } = data.info[0];
-    const location = locationOfControls.value.split(',').slice(2).join(',');
-
-    return (
-      <footer className='footer'>
-        <Container>
-          <Grid container spacing={2}>
-            <Grid item lg={3} md={12}>
-              <Typography className='copyring' variant='h6'>
-                ООО "Партнёр Сервис"
-              </Typography>
-              <Box className='bottom-options'>
-                <NavLink to={'/agreement'}>
-                  <Typography className='agreement' variant='caption'>
-                    Согласие на обработку персональных данных
-                  </Typography>
-                </NavLink>
-                <NavLink to={'/license'}>
-                  <Typography className='license' variant='caption'>
-                    Лицензия на осуществление деятельности
-                  </Typography>
-                </NavLink>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={9} lg={9} md={9}>
-              <Box className='footer-top-block'>
-                <NavList routes={publicNavigation} />
-                <Divider />
-                <Box className='bottom-social-nav'>
-                  <Link href={'/'}>
-                    <img src={vk} alt='Вконтакте' />
-                  </Link>
-                </Box>
-              </Box>
-              <Box className='footer-bottom-block'>
-                <Typography variant='subtitle1' className='phone'>
-                  <Link href={`tel:${contactPhoneNumber.value}`}>{contactPhoneNumber.value}</Link>
-                </Typography>
-                <Typography variant='subtitle1' className='email'>
-                  <Link href={`mailto:${email.value}`}>{email.value}</Link>
-                </Typography>
-                <Typography variant='subtitle1' className='address'>
-                  {location}
-                </Typography>
-              </Box>
-            </Grid>
+  return (
+    <StyledFooter>
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item mobile={12} desktop={3} mr={2}>
+            <CompanyBlockStyle variant='body1'>УК "Партнёр Сервис"</CompanyBlockStyle>
+            <NavList
+              sx={{ flexDirection: 'column', alignItems: 'start' }}
+              variant='custom'
+              routes={publicInfoNavigation}
+            ></NavList>
           </Grid>
-        </Container>
-      </footer>
-    );
-  }
+          <Grid item mobile={12} desktop={8}>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box>
+                <NavList
+                  sx={{
+                    flexDirection: { mobile: 'column', laptop: 'row' },
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    marginBottom: '20px',
+                  }}
+                  variant='footer'
+                  routes={publicNavigation}
+                />
+                <Link href={'/'} title='ВКонтатке'>
+                  <img src={vk} alt='ВКонтакте' />
+                </Link>
+              </Box>
+              <Divider sx={{ marginBottom: '20px' }} />
+              <Box>{data && <FooterList data={data} />}</Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </StyledFooter>
+  );
 };
 
 export default React.memo(Footer);

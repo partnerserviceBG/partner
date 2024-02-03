@@ -1,7 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
 const ApiError = require("../error/api-error");
-
 class HousesController {
   async getAll(req, res, next) {
     await axios

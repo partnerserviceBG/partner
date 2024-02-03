@@ -21,4 +21,5 @@ export interface House {
   underground_floor_count?: number;
   unique_number?: string;
   used_year?: number;
+  geometry?: number[];
 }

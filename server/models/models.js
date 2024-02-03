@@ -21,7 +21,8 @@ const Token = sequelize.define("token", {
   refreshToken: { type: DataTypes.STRING, require: true },
 });
 
-const OrganisationInfo = sequelize.define("info", {
+const Info = sequelize.define("info", {
+  director: { type: DataTypes.JSON },
   //Наименование организации
   nameOfCompany: { type: DataTypes.JSON },
   //Организационно-правовая форма
@@ -56,7 +57,7 @@ const License = sequelize.define("license", {
   licenseDocument: { type: DataTypes.JSON },
 });
 
-const OperatingMode = sequelize.define("operating", {
+const Schedule = sequelize.define("schedule", {
   //Часы работы
   organizationOperatingHours: {
     type: DataTypes.JSON,
@@ -82,6 +83,6 @@ module.exports = {
   User,
   Token,
   License,
-  OperatingMode,
-  OrganisationInfo,
+  Schedule,
+  Info,
 };

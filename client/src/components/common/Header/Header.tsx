@@ -1,15 +1,27 @@
 import React from 'react';
-import { Container, Logo, NavList } from '@components/common';
+import { Container, NavList } from '@components/common';
 import { useAuth } from '@hooks/useAuth.ts';
 import { publicNavigation } from '@routes/navigation/public-navigation.tsx';
-import { AppBar, Avatar, Box, IconButton, Link, Menu, Toolbar, Tooltip, Typography } from '@mui/material';
+import { AppBar, Avatar, Box, IconButton, Link, Menu, styled, Tooltip, Typography, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { privateNavigation } from '@routes/navigation/private-navigation.tsx';
-import { useGetOrganisationInfoQuery } from '@services/organisation-info.service.ts';
+import { useGetInfoQuery } from '@services/organisation-info.service.ts';
+import { NavLink } from 'react-router-dom';
+
+const CompanyStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontWeight: 'bold',
+}));
+
+const CaptionStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.dark,
+  fontWeight: 'bold',
+}));
 const Header: React.FC = () => {
   const { user } = useAuth();
+  const theme = useTheme();
 
-  const { data } = useGetOrganisationInfoQuery();
+  const { data } = useGetInfoQuery();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -30,88 +42,124 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className='header'>
-      <AppBar position='static'>
-        <Container maxWidth='xl'>
-          <Toolbar disableGutters>
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size='large'
-                aria-label='account of current user'
-                aria-controls='menu-appbar'
-                aria-haspopup='true'
-                onClick={handleOpenNavMenu}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                <NavList direction='column' routes={publicNavigation} />
-              </Menu>
+    <AppBar position='static' color='default' elevation={0}>
+      <Container
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          maxHeight: '120px',
+          minHeight: '120px',
+        }}
+      >
+        <Box sx={{ display: { mobile: 'flex', laptop: 'none' } }}>
+          <IconButton
+            size='large'
+            aria-label='account of current user'
+            aria-controls='menu-appbar'
+            aria-haspopup='true'
+            onClick={handleOpenNavMenu}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Menu
+            id='menu-appbar'
+            anchorEl={anchorElNav}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
+            sx={{
+              display: { tablet: 'block', desktop: 'none' },
+            }}
+          >
+            <NavList variant='menu' sx={{ flexDirection: 'column' }} routes={publicNavigation} />
+          </Menu>
+        </Box>
+        <Box
+          sx={{
+            display: { mobile: 'none', laptop: 'flex' },
+            flexDirection: 'column',
+            minWidth: '205px',
+            marginRight: '20px',
+          }}
+        >
+          <NavLink style={{ textDecoration: 'none' }} to={'/'}>
+            <CompanyStyle variant='h2'>Партнер Сервис</CompanyStyle>
+            <CaptionStyle variant='caption'>Управляющая компания</CaptionStyle>
+          </NavLink>
+        </Box>
+        <Box sx={{ display: { mobile: 'none', laptop: 'flex' }, alignItems: 'center' }}>
+          <NavList variant='header' routes={publicNavigation} />
+        </Box>
+
+        {data && (
+          <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', minWidth: '150px' }}>
+            <Box
+              component={Typography}
+              sx={{
+                color: theme.palette.warning.main,
+              }}
+              variant='subtitle1'
+            >
+              Диспетчер 24/7
             </Box>
-            <Container sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Logo />
-              <NavList routes={publicNavigation} />
-            </Container>
-            {data && (
-              <Box className='contact-block'>
-                <Typography variant='subtitle1' className='dispatcher'>
-                  Диспетчер 24/7
-                </Typography>
-                <Typography variant='subtitle1' className='phone'>
-                  <Link href={`tel:${data.info[0].contactPhoneNumber.value}`}>
-                    {data.info[0].contactPhoneNumber.value}
+            <Box sx={{ textDecoration: 'none' }} component={Typography} variant='subtitle1'>
+              {data &&
+                data.map((el) => (
+                  <Link
+                    underline='none'
+                    sx={{
+                      '&::after': {
+                        content: '"📱"',
+                        ml: '5px',
+                      },
+                    }}
+                    key={el.id}
+                    href={`tel:${el.contactPhoneNumber.value}`}
+                  >
+                    {el.contactPhoneNumber.value}
                   </Link>
-                </Typography>
-              </Box>
-            )}
-            {user && (
-              <Box className='admin'>
-                <Tooltip title='Админирстрирование'>
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id='menu-appbar'
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <NavList direction='column' routes={privateNavigation} />
-                </Menu>
-              </Box>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </header>
+                ))}
+            </Box>
+          </Box>
+        )}
+        {user && (
+          <Box className='admin'>
+            <Tooltip title='Админирстрирование'>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id='menu-appbar'
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <NavList variant='menu' sx={{ flexDirection: 'column' }} routes={privateNavigation} />
+            </Menu>
+          </Box>
+        )}
+      </Container>
+    </AppBar>
   );
 };
 

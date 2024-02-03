@@ -1,8 +1,4 @@
-const {
-  License,
-  OperatingMode,
-  OrganisationInfo,
-} = require("../models/models");
+const { License, Schedule, Info } = require("../models/models");
 
 class OrganisationInfoService {
   async createLicense() {
@@ -27,12 +23,12 @@ class OrganisationInfoService {
     });
   }
 
-  async createOperatingMode() {
-    const organizationOperatingHours = "07:00 - 16:00";
+  async createScheduleCompany() {
+    const organizationOperatingHours = "Понедельник - Пятница: 07:00 - 16:00";
     const breakHour = "11:00 - 12:00";
-    const personalByDirector = "09:00-11:00";
+    const personalByDirector = "Cреда: 09:00-11:00";
 
-    return await OperatingMode.create({
+    return await Schedule.create({
       organizationOperatingHours: {
         field: "Часы работы",
         value: organizationOperatingHours,
@@ -64,8 +60,13 @@ class OrganisationInfoService {
     const locationOfControls =
       "Нижегородская обл, р-н. Богородский, г. Богородск, ул. Ленина, д. 101";
     const dispatcherContacts = "+7 (83170) 2-16-54";
+    const director = "Кальмин Денис Александрович";
 
-    return await OrganisationInfo.create({
+    return await Info.create({
+      director: {
+        field: "Директор",
+        value: director,
+      },
       nameOfCompany: {
         field: "Наименование организации",
         value: nameOfCompany,
@@ -116,14 +117,13 @@ class OrganisationInfoService {
 
   async createOrganisationInfo() {
     const license = await License.findAll();
-    const info = await OrganisationInfo.findAll();
-    const operatingMode = await OperatingMode.findAll();
-    const firstCreateInfo =
-      !license.length || !info.length || !operatingMode.length;
+    const info = await Info.findAll();
+    const schedule = await Schedule.findAll();
+    const firstCreateInfo = !license.length || !info.length || !schedule.length;
     if (firstCreateInfo) {
       await this.createInfo();
       await this.createLicense();
-      await this.createOperatingMode();
+      await this.createScheduleCompany();
     }
   }
 }

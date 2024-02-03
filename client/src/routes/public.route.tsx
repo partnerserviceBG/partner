@@ -5,7 +5,7 @@ import { About } from '@pages/about/about.tsx';
 import { House } from '@components/ui/Houses/house/house.tsx';
 import { Vacancy } from '@pages/vacancy/vacancy.tsx';
 import { Disclosure } from '@pages/disclosure/disclosure.tsx';
-import { Contacts } from '@pages/contacts/contacts.tsx';
+import { Contacts } from '@pages/contacts/Contacts.tsx';
 import { NewsPage } from '@pages/news/NewsPage.tsx';
 import { HousesPage } from '@pages/houses/HousesPage.tsx';
 import { News } from '@components/ui/News/news/news.tsx';

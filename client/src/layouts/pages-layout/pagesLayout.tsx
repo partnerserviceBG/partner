@@ -1,18 +1,20 @@
 import { BreadCrumbs, Footer, Header } from '@components/common';
 import { Outlet } from 'react-router-dom';
-import { Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 export const PagesLayout = () => {
   return (
-    <>
-      <Header />
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Box mb={2}>
+        <Header />
+      </Box>
       <BreadCrumbs />
-      <main className='middle'>
-        <Container>
-          <Outlet />
-        </Container>
+      <main>
+        <Outlet />
       </main>
-      <Footer />
-    </>
+      <Box mt='auto'>
+        <Footer />
+      </Box>
+    </Box>
   );
 };

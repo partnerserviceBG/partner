@@ -1,6 +1,7 @@
 import { InfoFields } from '@models/InfoFields.ts';
 
 export interface OrganisationInfo {
+  id: number;
   nameOfCompany: InfoFields;
   organizationalAndLegalForm: InfoFields;
   OGRN: InfoFields;
