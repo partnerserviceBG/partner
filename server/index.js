@@ -5,10 +5,12 @@ const cors = require("cors");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/error-handling.middleware");
 const userService = require("./services/user.service");
+const organisationInfoService = require("./services/organisation-info.service");
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+app.use("/Images", express.static("./Images"));
 
 app.use(express.json());
 app.use(cors());
@@ -21,6 +23,7 @@ const start = async () => {
     await sequelize.authenticate();
     await sequelize.sync().then(() => {
       userService.createDefaultUser();
+      organisationInfoService.createOrganisationInfo();
     });
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (e) {

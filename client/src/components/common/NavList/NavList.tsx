@@ -1,31 +1,82 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { RoutesNavType } from '@routes/router';
+import { RoutesNavType } from '@utils/types.ts';
 import { useAuth } from '@hooks/useAuth.ts';
+import { useLogoutMutation } from '@services/user.service.ts';
+import { styled, SxProps, Theme } from '@mui/material';
 
-type NavListProps = {
-  label?: string;
-  direction?: 'row' | 'column';
+export interface NavigationLinkProps {
   routes: RoutesNavType[];
-  logOut?: (id: number) => void;
-  [x: string]: any;
-};
+  variant: Variant;
+  handleLogout?: () => void;
+  sx?: SxProps<Theme>;
+}
 
-export const NavList: React.FC<NavListProps> = ({ label, routes, direction = 'row', logOut, ...rest }) => {
-  const { user } = useAuth();
+type Variant = 'header' | 'footer' | 'menu' | 'custom';
+
+const NavRoot = styled('nav')<{ sx?: SxProps<Theme> }>((props) => {
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+  };
+});
+
+const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
+  return {
+    transition: 'all 0.2s linear',
+    color: theme.palette.primary.light,
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    '&:not(:last-child)': {
+      paddingRight: '20px',
+    },
+    '&:hover': {
+      opacity: 0.7,
+      '&:not(.active)': {
+        textDecoration: 'underline',
+      },
+    },
+    '&.active': {
+      opacity: 0.4,
+    },
+    ...(variant === 'footer' && {
+      '&:hover': {
+        opacity: 0.7,
+        '&:not(.active)': {
+          textDecoration: 'none',
+        },
+      },
+    }),
+    ...(variant === 'custom' && {
+      fontSize: theme.typography.caption.fontSize,
+    }),
+  };
+});
+
+export const NavList: React.FC<NavigationLinkProps> = (props) => {
+  const { user, removeAuthData } = useAuth();
+  const [logOut] = useLogoutMutation();
+
+  const { routes, variant } = props;
+  const handleLogout = () => {
+    logOut(user.id);
+    removeAuthData();
+  };
   return (
-    <nav {...rest}>
-      {label && <h3>{label}</h3>}
-      <ul className='nav-wrapper' style={{ flexDirection: direction }}>
-        {routes.map((route) => (
-          <li key={route.name} className='nav-item'>
-            <NavLink className='nav-item__link' to={route.path}>
-              {route.name}
-            </NavLink>
-          </li>
-        ))}
-        {user && <button onClick={() => logOut && logOut(user.id)}>logout</button>}
-      </ul>
-    </nav>
+    <NavRoot {...props}>
+      {routes.map((route) =>
+        route.name === 'Выйти' ? (
+          <NavItem key={route.path} onClick={handleLogout} to='' variant={variant}>
+            {route.name}
+          </NavItem>
+        ) : (
+          <NavItem key={route.path} variant={variant} to={route.path}>
+            {route.name}
+          </NavItem>
+        )
+      )}
+    </NavRoot>
   );
 };

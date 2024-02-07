@@ -1,6 +1,7 @@
 const ApiError = require("../error/api-error");
 const tokenService = require("../services/token.service");
 
+//TODO: Поменять на правильные ошибки
 module.exports = function (req, res, next) {
   try {
     const authorizationHeader = req.headers.authorization;

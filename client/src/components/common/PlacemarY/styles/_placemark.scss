@@ -1,0 +1,14 @@
+ymaps[class$="balloon__content"] {
+
+  .bold {
+    font-weight: bold;
+  }
+}
+
+ymaps[class$="balloon__layout"] {
+  padding: 5px;
+}
+
+ymaps[class$="balloon__tail"]::after {
+
+}
