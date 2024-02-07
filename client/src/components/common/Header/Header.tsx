@@ -9,12 +9,13 @@ import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 import { NavLink } from 'react-router-dom';
 
 const CompanyStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.main,
+  color: theme.palette.primary.light,
+  opacity: 0.4,
   fontWeight: 'bold',
 }));
 
 const CaptionStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.dark,
+  color: theme.palette.primary.light,
   fontWeight: 'bold',
 }));
 const Header: React.FC = () => {
@@ -42,7 +43,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position='static' color='default' elevation={0}>
+    <AppBar position='static' elevation={0}>
       <Container
         sx={{
           display: 'flex',
@@ -87,12 +88,12 @@ const Header: React.FC = () => {
           sx={{
             display: { mobile: 'none', laptop: 'flex' },
             flexDirection: 'column',
-            minWidth: '205px',
+            minWidth: '280px',
             marginRight: '20px',
           }}
         >
           <NavLink style={{ textDecoration: 'none' }} to={'/'}>
-            <CompanyStyle variant='h2'>Партнер Сервис</CompanyStyle>
+            <CompanyStyle variant='h4'>Партнер Сервис</CompanyStyle>
             <CaptionStyle variant='caption'>Управляющая компания</CaptionStyle>
           </NavLink>
         </Box>
@@ -101,7 +102,7 @@ const Header: React.FC = () => {
         </Box>
 
         {data && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', minWidth: '150px' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', minWidth: '165px' }}>
             <Box
               component={Typography}
               sx={{
@@ -117,6 +118,7 @@ const Header: React.FC = () => {
                   <Link
                     underline='none'
                     sx={{
+                      color: theme.palette.primary.light,
                       '&::after': {
                         content: '"📱"',
                         ml: '5px',

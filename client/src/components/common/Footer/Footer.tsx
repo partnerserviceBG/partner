@@ -9,6 +9,7 @@ import vk from '@assets/svg/vk.svg';
 import { OrganisationInfo } from '@models/OrganisationInfo.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
+import SocialShare from '@components/share/social-share-block/SocialShare.tsx';
 
 interface FooterListProps<T> {
   data: T[];
@@ -19,6 +20,7 @@ type LinkType = 'tel' | 'email' | 'location';
 const StyledFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   padding: '65px 0 85px',
+  position: 'relative',
 }));
 
 const CompanyBlockStyle = styled(Typography)(({ theme }) => ({
@@ -31,41 +33,33 @@ const CompanyBlockStyle = styled(Typography)(({ theme }) => ({
 }));
 
 const LinkStyle = styled(Link)<{ type: LinkType }>(({ theme, type }) => {
-  const defaultLinkStyle = {
-    opacity: 0.8,
-    '&:hover': {
-      textDecoration: 'none',
-      opacity: 0.5,
-    },
-    '&.active': {
-      opacity: 0.5,
-    },
-  };
   return {
     transition: 'all 0.2s linear',
     color: theme.palette.primary.light,
     textDecoration: 'none',
     fontWeight: 'bold',
+    '&:hover': {
+      opacity: 0.7,
+    },
     ...(type === 'tel' && {
-      ...defaultLinkStyle,
       '&::before': {
-        content: '"📱"',
         marginRight: '10px',
+        content: '"📱"',
       },
     }),
     ...(type === 'email' && {
-      ...defaultLinkStyle,
       textDecoration: 'underline',
       '&::before': {
-        content: '"📧"',
         marginRight: '10px',
+        content: '"📧"',
       },
     }),
     ...(type === 'location' && {
-      color: '#fff',
+      '&:hover': {
+        opacity: 1,
+      },
       '&::before': {
         content: '"🖈"',
-        marginRight: '10px',
       },
     }),
   };
@@ -110,7 +104,7 @@ const Footer = () => {
       <Container>
         <Grid container spacing={2}>
           <Grid item mobile={12} desktop={3} mr={2}>
-            <CompanyBlockStyle variant='body1'>УК "Партнёр Сервис"</CompanyBlockStyle>
+            <CompanyBlockStyle variant='h5'>УК "Партнёр Сервис"</CompanyBlockStyle>
             <NavList
               sx={{ flexDirection: 'column', alignItems: 'start' }}
               variant='custom'
@@ -139,6 +133,7 @@ const Footer = () => {
             </Box>
           </Grid>
         </Grid>
+        <SocialShare />
       </Container>
     </StyledFooter>
   );

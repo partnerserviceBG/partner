@@ -1,7 +1,7 @@
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { store } from '@store/store';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './App.tsx';
 import { lightTheme } from '@styles/theme.ts';
 

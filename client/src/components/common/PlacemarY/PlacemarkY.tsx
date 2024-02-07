@@ -1,5 +1,6 @@
 import React from 'react';
 import { Placemark } from 'react-yandex-maps';
+import './styles/_placemark.scss';
 
 export interface PlacemarkYProps {
   geometry?: number[];

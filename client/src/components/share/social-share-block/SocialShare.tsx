@@ -18,9 +18,7 @@ const SocialShareBoxStyle = styled(Box)(({ theme }) => ({
   borderRadius: '30px',
   padding: '17px 25px',
   boxShadow: '0 9px 30px rgba(0, 0, 0, 0.1)',
-  bottom: '-43px',
-  left: '50%',
-  marginLeft: '-690px',
+  top: '-25px',
   position: 'absolute',
 }));
 const SocialShare: React.FC = () => {

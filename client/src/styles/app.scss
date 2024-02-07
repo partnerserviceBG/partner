@@ -7,32 +7,10 @@
   box-sizing: border-box;
 }
 
-.name {
-  display: inline-block;
-  font-size: 1.125rem;
-  line-height: 1.25rem;
-  padding-bottom: 0.25rem;
-  margin-bottom: 21px;
-}
-
-/* W3C standard
-   сейчас только для Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #fd7e14 orange;
-}
-
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
   height: 12px;
   width: 0;
 }
-*::-webkit-scrollbar-track {
-  background: #fd7e14;
-}
-*::-webkit-scrollbar-thumb {
-  background-color: #fd7e14;
-  border-radius: 5px;
-  border: 3px solid orange;
-}
+
 

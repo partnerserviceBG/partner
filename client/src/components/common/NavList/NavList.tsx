@@ -26,52 +26,31 @@ const NavRoot = styled('nav')<{ sx?: SxProps<Theme> }>((props) => {
 const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
   return {
     transition: 'all 0.2s linear',
-    ...(variant === 'header' && {
-      color: theme.palette.primary.contrastText,
-      textDecoration: 'none',
-      fontWeight: theme.typography.subtitle1.fontWeight,
-      fontSize: theme.typography.subtitle1.fontSize,
-      lineHeight: theme.typography.subtitle1.lineHeight,
-      '&:not(:last-child)': {
-        paddingRight: '20px',
+    color: theme.palette.primary.light,
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    '&:not(:last-child)': {
+      paddingRight: '20px',
+    },
+    '&:hover': {
+      opacity: 0.7,
+      '&:not(.active)': {
+        textDecoration: 'underline',
       },
-      '&:hover': {
-        '&:not(.active)': {
-          textDecoration: 'underline',
-        },
-        textDecoration: 'none',
-      },
-      '&.active': {
-        color: theme.palette.primary.main,
-      },
-    }),
+    },
+    '&.active': {
+      opacity: 0.4,
+    },
     ...(variant === 'footer' && {
-      color: theme.palette.primary.light,
-      fontWeight: 'bold',
-      textDecoration: 'none',
-      '&:not(:last-child)': {
-        paddingRight: '10px',
-      },
       '&:hover': {
-        opacity: 0.5,
+        opacity: 0.7,
+        '&:not(.active)': {
+          textDecoration: 'none',
+        },
       },
-      '&.active': {
-        opacity: 0.5,
-      },
-    }),
-    ...(variant === 'menu' && {
-      color: '#fff',
     }),
     ...(variant === 'custom' && {
-      color: theme.palette.primary.light,
       fontSize: theme.typography.caption.fontSize,
-      opacity: 0.7,
-      '&:hover': {
-        opacity: 0.4,
-      },
-      '&.active': {
-        opacity: 0.4,
-      },
     }),
   };
 });
