@@ -1,8 +1,8 @@
 import { FC, ReactNode, useState } from 'react';
 import { useGetHousesQuery } from '@services/house.service.ts';
-import { YMapsApi } from 'react-yandex-maps';
 import { MapY } from '@components/ui/MapY/MapY.tsx';
 import { House } from '@models/House.ts';
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
 
 export const HousesPage: FC = (): ReactNode => {
   const { data } = useGetHousesQuery();
@@ -14,7 +14,8 @@ export const HousesPage: FC = (): ReactNode => {
         data.map(async (item) => {
           try {
             const geometry = await ymap.geocode(`${item.full_address}`);
-            return { ...item, geometry: geometry?.geoObjects.get(0).geometry.getCoordinates() };
+            // @ts-ignore
+            return { ...item, geometry: geometry?.geoObjects.get(0).geometry?.getCoordinates() };
           } catch (error) {
             return item;
           }
