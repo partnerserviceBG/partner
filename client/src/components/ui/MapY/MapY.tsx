@@ -1,17 +1,17 @@
-import {
-  FullscreenControl,
-  GeolocationControl,
-  Map,
-  TrafficControl,
-  TypeSelector,
-  YMaps,
-  YMapsApi,
-  ZoomControl,
-} from 'react-yandex-maps';
 import { FC, ReactNode } from 'react';
 import { PlacemarkY } from '@components/common/PlacemarY/PlacemarkY.tsx';
 import { House } from '@models/House.ts';
 import { getShortAddress } from '@utils/utils.ts';
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
+import {
+  FullscreenControl,
+  GeolocationControl,
+  TrafficControl,
+  TypeSelector,
+  YMaps,
+  ZoomControl,
+  Map,
+} from '@pbe/react-yandex-maps';
 
 export interface MapYProps {
   onLoadGeoMap?: (ymaps: YMapsApi) => void;
@@ -40,20 +40,22 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17 }): ReactNod
         modules={['templateLayoutFactory', 'layout.ImageWithContent', 'geocode']}
         onLoad={onLoadGeoMap}
       >
-        <ZoomControl options={{ float: 'right' }} />
+        <ZoomControl options={{ position: { top: 108, left: 10 } }} />
         <FullscreenControl />
         <GeolocationControl
           options={{
-            float: 'left',
+            position: { top: 10, left: 10 },
           }}
         />
         <TrafficControl
           options={{
+            // @ts-ignore
             float: 'right',
           }}
         />
         <TypeSelector
           options={{
+            // @ts-ignore
             float: 'right',
           }}
         />
