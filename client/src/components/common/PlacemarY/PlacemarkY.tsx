@@ -1,6 +1,7 @@
 import React from 'react';
-import { Placemark } from 'react-yandex-maps';
 import './styles/_placemark.scss';
+import { Placemark } from '@pbe/react-yandex-maps';
+import { useTheme } from '@mui/material';
 
 export interface PlacemarkYProps {
   geometry?: number[];
@@ -25,6 +26,7 @@ export const PlacemarkY: React.FC<PlacemarkYProps> = ({
   balloonContentHeader = defaultBalloonContentHeader,
   balloonContent = defaultBalloonContent,
 }) => {
+  const theme = useTheme();
   return (
     <Placemark
       geometry={geometry}
@@ -38,6 +40,7 @@ export const PlacemarkY: React.FC<PlacemarkYProps> = ({
         iconLayout: 'default#image',
         iconImageHref: 'src/assets/png/marker.png',
         iconImageSize: [32, 32],
+        iconColor: theme.palette.primary.main,
         preset: 'islands#blackStretchyIcon',
       }}
     />

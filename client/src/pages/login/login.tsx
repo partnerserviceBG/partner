@@ -24,7 +24,7 @@ export const Login: FC = (): JSX.Element => {
   };
   return (
     <>
-      <Container component='main' maxWidth='xs'>
+      <Container component='main'>
         <Box
           sx={{
             marginTop: 8,
