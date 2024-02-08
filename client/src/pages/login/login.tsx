@@ -15,6 +15,7 @@ export const Login: FC = (): JSX.Element => {
       setAuthData(value);
       navigate('/admin', { replace: true });
     }
+    return () => {};
   }, [value]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

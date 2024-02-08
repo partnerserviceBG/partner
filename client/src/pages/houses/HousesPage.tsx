@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { useGetHousesQuery } from '@services/house.service.ts';
 import { MapY } from '@components/ui/MapY/MapY.tsx';
 import { House } from '@models/House.ts';
@@ -8,12 +8,13 @@ export const HousesPage: FC = (): ReactNode => {
   const { data } = useGetHousesQuery();
 
   const [dataWithGeometry, setDataWithGeometry] = useState<House[]>([]);
-  const onLoadGeoMap = async (ymap: YMapsApi) => {
+  const [ymap, setYmap] = useState<YMapsApi>();
+  const onLoadGeoMap = async (ymap?: YMapsApi) => {
     if (data) {
       const dataGeometry = await Promise.all(
         data.map(async (item) => {
           try {
-            const geometry = await ymap.geocode(`${item.full_address}`);
+            const geometry = await ymap?.geocode(`${item.full_address}`);
             // @ts-ignore
             return { ...item, geometry: geometry?.geoObjects.get(0).geometry?.getCoordinates() };
           } catch (error) {
@@ -25,5 +26,9 @@ export const HousesPage: FC = (): ReactNode => {
     }
   };
 
-  return <>{data && <MapY onLoadGeoMap={onLoadGeoMap} data={dataWithGeometry} zoom={12} />}</>;
+  useEffect(() => {
+    onLoadGeoMap(ymap).then();
+  }, [ymap]);
+
+  return <>{data && <MapY onLoadGeoMap={setYmap} data={dataWithGeometry} zoom={12} />}</>;
 };
