@@ -1,3 +1,4 @@
 export const environments = {
-  baseUrl: 'http://localhost:5000/api/',
+  baseUrl:
+    process.env.NODE_ENV === 'production' ? 'https://partner-servicebg.ru/api/v1' : 'http://localhost:5000/api/v1',
 };
