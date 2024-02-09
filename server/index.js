@@ -15,7 +15,7 @@ app.use("/Images", express.static("./Images"));
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-app.use("/api", router);
+app.use("/api/v1/", router);
 
 app.use(errorHandler);
 const start = async () => {
