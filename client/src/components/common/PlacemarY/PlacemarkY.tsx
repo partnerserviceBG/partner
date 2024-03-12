@@ -8,6 +8,7 @@ export interface PlacemarkYProps {
   hintContent?: string;
   balloonContentHeader?: string | null;
   balloonContent?: string;
+  template?: string | ymaps.IClassConstructor<ymaps.ILayout>;
 }
 
 const defaultHintContent = 'УК "Партнёр сервис"';

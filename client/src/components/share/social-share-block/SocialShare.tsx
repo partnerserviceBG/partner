@@ -11,6 +11,7 @@ const VKIcon = (props: SvgIconProps) => {
 
 const SocialShareBoxStyle = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
+  color: theme.palette.primary.main,
   display: 'flex',
   alignItems: 'center',
   maxWidth: 'fit-content',

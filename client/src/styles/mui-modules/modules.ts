@@ -24,7 +24,6 @@ export const breakpoints = {
   },
 };
 
-// Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     name: true;
@@ -37,7 +36,6 @@ declare module '@mui/material/Typography' {
     filedValue: true;
   }
 }
-
 export const typography = {
   name: {
     fontSize: '3.125rem',

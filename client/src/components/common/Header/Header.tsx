@@ -9,13 +9,12 @@ import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 import { NavLink } from 'react-router-dom';
 
 const CompanyStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.light,
-  opacity: 0.4,
+  color: theme.palette.primary.main,
   fontWeight: 'bold',
 }));
 
 const CaptionStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.light,
+  color: theme.palette.primary.contrastText,
   fontWeight: 'bold',
 }));
 const Header: React.FC = () => {
@@ -81,12 +80,16 @@ const Header: React.FC = () => {
               display: { tablet: 'block', desktop: 'none' },
             }}
           >
-            <NavList variant='menu' sx={{ flexDirection: 'column' }} routes={publicNavigation} />
+            <NavList
+              variant='menu'
+              sx={{ flexDirection: 'column', padding: '10px', alignItems: 'start' }}
+              routes={publicNavigation}
+            />
           </Menu>
         </Box>
         <Box
           sx={{
-            display: { mobile: 'none', laptop: 'flex' },
+            display: { mobile: 'none', tablet: 'flex' },
             flexDirection: 'column',
             minWidth: '280px',
             marginRight: '20px',
@@ -107,6 +110,7 @@ const Header: React.FC = () => {
               component={Typography}
               sx={{
                 color: theme.palette.warning.main,
+                fontWeight: 'bold',
               }}
               variant='subtitle1'
             >
@@ -118,7 +122,7 @@ const Header: React.FC = () => {
                   <Link
                     underline='none'
                     sx={{
-                      color: theme.palette.primary.light,
+                      color: theme.palette.primary.main,
                       '&::after': {
                         content: '"📱"',
                         ml: '5px',
