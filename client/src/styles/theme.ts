@@ -45,11 +45,34 @@ const dark = createTheme({
   ...defaultThemesSettings,
 });
 
+const purple = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#0926b6',
+      light: '#FFFFFF',
+      dark: '#000000',
+      contrastText: '#525252',
+    },
+    warning: {
+      main: '#f50057',
+    },
+  },
+  ...defaultThemesSettings,
+});
+
 const getStyleOverrides = (theme: Theme) => {
   return {
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: theme.palette.primary.light,
+        },
       },
     },
     MuiBreadcrumbs: {
@@ -62,7 +85,7 @@ const getStyleOverrides = (theme: Theme) => {
             right: 0,
             zIndex: -1,
             display: 'block',
-            background: theme.palette.primary.main,
+            background: `${theme.palette.primary.main} url(src/assets/png/breadcrumbs.png) 50% 50% no-repeat`,
             filter: 'blur(5px)',
             width: '100%',
             height: '190px',
@@ -82,12 +105,26 @@ const getStyleOverrides = (theme: Theme) => {
           a: {
             color: theme.palette.primary.light,
             textDecoration: 'none',
+            '&.active': {
+              cursor: 'default',
+            },
           },
         },
         separator: {
           color: theme.palette.primary.light,
         },
       },
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: 'scroll' },
+          style: {
+            marginBottom: '100px',
+            border: `1px solid ${theme.palette.primary.main}`,
+          },
+        },
+      ],
     },
     MuiTypography: {
       variants: [
@@ -106,6 +143,12 @@ const getStyleOverrides = (theme: Theme) => {
 export const lightTheme = createTheme(light, {
   components: {
     ...getStyleOverrides(light),
+  },
+});
+
+export const purpleTheme = createTheme(purple, {
+  components: {
+    ...getStyleOverrides(purple),
   },
 });
 

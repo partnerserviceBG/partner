@@ -41,6 +41,9 @@ const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
     '&.active': {
       opacity: 0.4,
     },
+    ...(variant === 'header' && {
+      color: theme.palette.primary.main,
+    }),
     ...(variant === 'footer' && {
       '&:hover': {
         opacity: 0.7,
@@ -51,6 +54,11 @@ const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
     }),
     ...(variant === 'custom' && {
       fontSize: theme.typography.caption.fontSize,
+    }),
+    ...(variant === 'menu' && {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.palette.primary.main,
+      padding: '5px',
     }),
   };
 });
@@ -68,7 +76,7 @@ export const NavList: React.FC<NavigationLinkProps> = (props) => {
     <NavRoot {...props}>
       {routes.map((route) =>
         route.name === 'Выйти' ? (
-          <NavItem key={route.path} onClick={handleLogout} to='' variant={variant}>
+          <NavItem key={route.path} onClick={handleLogout} to={'/'} variant={variant}>
             {route.name}
           </NavItem>
         ) : (
