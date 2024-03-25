@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { House } from '@models/House.ts';
 // @ts-ignore
-import HouseImg from '@assets/png/house.png';
+import HouseImg from '../../../../../public/images/png/house.png';
 
 interface HouseCardProps {
   house: House;

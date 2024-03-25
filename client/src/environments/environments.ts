@@ -1,3 +1,3 @@
 export const environments = {
-  baseUrl: 'https://partner-servicebg.ru/api/v1',
+  baseUrl: 'http://localhost:5000/api/v1',
 };

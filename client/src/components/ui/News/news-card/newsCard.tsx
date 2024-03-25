@@ -2,7 +2,7 @@ import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/m
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 // @ts-ignore
-import NewsImg from '@assets/svg/news.svg';
+import NewsImg from '../../../../../public/images/svg/news.svg';
 import { Post } from '@models/Post.ts';
 
 interface NewsCardProps {

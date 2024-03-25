@@ -39,7 +39,7 @@ export const PlacemarkY: React.FC<PlacemarkYProps> = ({
       modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
       options={{
         iconLayout: 'default#image',
-        iconImageHref: 'src/assets/png/marker.png',
+        iconImageHref: './images/png/marker.png',
         iconImageSize: [32, 32],
         iconColor: theme.palette.primary.main,
         preset: 'islands#blackStretchyIcon',
