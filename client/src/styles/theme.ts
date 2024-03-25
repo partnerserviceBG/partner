@@ -85,7 +85,7 @@ const getStyleOverrides = (theme: Theme) => {
             right: 0,
             zIndex: -1,
             display: 'block',
-            background: `${theme.palette.primary.main} url(src/assets/png/breadcrumbs.png) 50% 50% no-repeat`,
+            background: `${theme.palette.primary.main} url(./images/png/breadcrumbs.png) 50% 50% no-repeat`,
             filter: 'blur(5px)',
             width: '100%',
             height: '190px',

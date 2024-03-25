@@ -5,6 +5,7 @@ const cors = require("cors");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/error-handling.middleware");
 const userService = require("./services/user.service");
+const HousesService = require("./services/houses.service");
 const organisationInfoService = require("./services/organisation-info.service");
 
 const PORT = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ const start = async () => {
     await sequelize.sync().then(() => {
       userService.createDefaultUser();
       organisationInfoService.createOrganisationInfo();
+      HousesService.createHousesByDb();
     });
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
   } catch (e) {

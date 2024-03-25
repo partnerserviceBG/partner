@@ -70,6 +70,8 @@ const Schedule = sequelize.define("schedule", {
   },
 });
 
+const Houses = sequelize.define("houses");
+
 User.beforeCreate(async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
 });
@@ -85,4 +87,5 @@ module.exports = {
   License,
   Schedule,
   Info,
+  Houses,
 };

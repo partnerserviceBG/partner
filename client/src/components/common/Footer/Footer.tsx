@@ -5,7 +5,7 @@ import { publicNavigation } from '@routes/navigation/public-navigation.tsx';
 import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 
 // @ts-ignore
-import vk from '@assets/svg/vk.svg';
+import vk from '../../../../public/images/svg/vk.svg';
 import { OrganisationInfo } from '@models/OrganisationInfo.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
