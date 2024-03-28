@@ -20,10 +20,16 @@ const light = createTheme({
       main: '#fd7e14',
       light: '#FFFFFF',
       dark: '#000000',
-      contrastText: '#525252',
+      contrastText: '#505050',
+    },
+    info: {
+      main: 'rgba(253, 126, 20, 0.5)',
     },
     warning: {
       main: '#f50057',
+    },
+    grey: {
+      50: '#6d6d6d',
     },
   },
   ...defaultThemesSettings,
@@ -36,7 +42,7 @@ const dark = createTheme({
       main: '#525252',
       light: '#FFFFFF',
       dark: '#000000',
-      contrastText: '#525252',
+      contrastText: '#505050',
     },
     warning: {
       main: '#f50057',
@@ -52,7 +58,7 @@ const purple = createTheme({
       main: '#0926b6',
       light: '#FFFFFF',
       dark: '#000000',
-      contrastText: '#525252',
+      contrastText: '#505050',
     },
     warning: {
       main: '#f50057',
@@ -97,17 +103,14 @@ const getStyleOverrides = (theme: Theme) => {
           color: theme.palette.primary.light,
           '&:last-child': {
             [theme.breakpoints.down('laptop')]: {
-              fontSize: theme.typography.h4.fontSize,
+              fontSize: theme.typography.h2.fontSize,
             },
-            fontSize: theme.typography.h3.fontSize,
-            fontWeight: 'bold',
+            fontSize: theme.typography.body2.fontSize,
+            fontWeight: theme.typography.body2.fontWeight,
           },
           a: {
             color: theme.palette.primary.light,
             textDecoration: 'none',
-            '&.active': {
-              cursor: 'default',
-            },
           },
         },
         separator: {
@@ -129,9 +132,33 @@ const getStyleOverrides = (theme: Theme) => {
     MuiTypography: {
       variants: [
         {
-          props: { variant: 'border' },
+          props: { variant: 'h1' || 'h2' || 'h4' || 'description' || 'description_large' },
           style: {
-            marginBottom: '100px',
+            color: `${theme.palette.primary.dark}`,
+          },
+        },
+        {
+          props: { variant: 'h3' },
+          style: {
+            color: `${theme.palette.grey['50']}`,
+          },
+        },
+        {
+          props: { variant: 'p' || 'subtitle' || 'caption' },
+          style: {
+            color: `${theme.palette.primary.contrastText}`,
+          },
+        },
+        {
+          props: { variant: 'date' },
+          style: {
+            color: `${theme.palette.primary.main}`,
+          },
+        },
+        {
+          props: { variant: 'border_bottom' },
+          style: {
+            paddingBottom: '0.25rem',
             borderBottom: `3px solid ${theme.palette.primary.main}`,
           },
         },
@@ -157,3 +184,9 @@ export const darkTheme = createTheme(dark, {
     ...getStyleOverrides(dark),
   },
 });
+
+export const supportedThemes = {
+  lightTheme: lightTheme,
+  darkTheme: darkTheme,
+  purpleTheme: purpleTheme,
+};

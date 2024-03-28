@@ -3,6 +3,7 @@ import { useGetHousesQuery } from '@services/house.service.ts';
 import { MapY } from '@components/ui/MapY/MapY.tsx';
 import { House } from '@models/House.ts';
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
+import { Box, Container } from '@mui/material';
 
 export const HousesPage: FC = (): ReactNode => {
   const { data } = useGetHousesQuery();
@@ -30,5 +31,17 @@ export const HousesPage: FC = (): ReactNode => {
     onLoadGeoMap(ymap).then();
   }, [ymap]);
 
-  return <>{data && <MapY onLoadGeoMap={setYmap} data={dataWithGeometry} zoom={12} />}</>;
+  return (
+    <>
+      {data && <MapY onLoadGeoMap={setYmap} data={dataWithGeometry} zoom={12} />}
+      {data && (
+        <Container sx={{ marginBottom: '60px' }}>
+          {data.map((el) => {
+            console.log(el.full_address?.split(','));
+            return <Box>{el.full_address}</Box>;
+          })}
+        </Container>
+      )}
+    </>
+  );
 };

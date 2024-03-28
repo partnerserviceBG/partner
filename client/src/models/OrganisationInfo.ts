@@ -1,7 +1,7 @@
 import { InfoFields } from '@models/InfoFields.ts';
 
-export interface OrganisationInfo {
-  id: number;
+export type OrganisationInfo = {
+  [key: string]: InfoFields;
   nameOfCompany: InfoFields;
   organizationalAndLegalForm: InfoFields;
   OGRN: InfoFields;
@@ -13,4 +13,6 @@ export interface OrganisationInfo {
   mailingAddress: InfoFields;
   locationOfControls: InfoFields;
   dispatcherContacts: InfoFields;
-}
+} & {
+  id: number;
+};

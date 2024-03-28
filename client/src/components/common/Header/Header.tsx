@@ -96,7 +96,7 @@ const Header: React.FC = () => {
           }}
         >
           <NavLink style={{ textDecoration: 'none' }} to={'/'}>
-            <CompanyStyle variant='h4'>Партнер Сервис</CompanyStyle>
+            <CompanyStyle variant='h2'>Партнер Сервис</CompanyStyle>
             <CaptionStyle variant='caption'>Управляющая компания</CaptionStyle>
           </NavLink>
         </Box>
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
             </Box>
             <Box sx={{ textDecoration: 'none' }} component={Typography} variant='subtitle1'>
               {data &&
-                data.map((el) => (
+                [data].map((el) => (
                   <Link
                     underline='none'
                     sx={{

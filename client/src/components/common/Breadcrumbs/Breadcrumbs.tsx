@@ -6,13 +6,13 @@ import { useGetHousesQuery } from '@services/house.service.ts';
 import { useGetPostsQuery } from '@services/post.service.ts';
 import { Container } from '@components/common';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
+import { Box } from '@mui/material';
 
 export const BreadCrumbs = () => {
   const location = useLocation();
   const { data: houses } = useGetHousesQuery();
   const { data: news } = useGetPostsQuery();
   const pathNames = location.pathname.split(/[/]/).filter((x) => x);
-  console.log(location);
 
   const navigationPath = [...publicNavigation, ...privateNavigation, ...publicInfoNavigation];
   const getPath = (path: string) => {
@@ -49,13 +49,7 @@ export const BreadCrumbs = () => {
               </NavLink>
             ))
             .slice(0, pathNames.length - 1)}
-          {pathNames
-            .map((path) => (
-              <NavLink to={path} key={path}>
-                {getPath(path)}
-              </NavLink>
-            ))
-            .slice(pathNames.length - 1)}
+          {pathNames.map((path) => <Box key={path}>{getPath(path)}</Box>).slice(pathNames.length - 1)}
         </Breadcrumbs>
       </Container>
     );
