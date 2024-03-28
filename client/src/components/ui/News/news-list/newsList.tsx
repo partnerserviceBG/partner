@@ -1,5 +1,3 @@
-// @ts-ignore
-import NewsImg from '../../../../../public/images/svg/news.svg';
 import { FC } from 'react';
 import { useGetPostsQuery } from '@services/post.service.ts';
 import { NewsItem } from '@components/ui/News/news-list/news-item/newsItem.tsx';

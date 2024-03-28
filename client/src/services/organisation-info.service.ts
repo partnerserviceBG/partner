@@ -9,21 +9,33 @@ export const organisationInfoApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: environments.baseUrl }),
   tagTypes: ['organisationInfo'],
   endpoints: (build) => ({
-    getAllInfo: build.query<{ info: OrganisationInfo[]; license: License[]; schedule: ScheduleCompany[] }, void>({
+    getAllInfo: build.query<{ info: OrganisationInfo; license: License; schedule: ScheduleCompany }, void>({
       query: () => 'organisation-info',
       providesTags: () => ['organisationInfo'],
     }),
-    getLicense: build.query<License[], void>({
+    getLicense: build.query<License, void>({
       query: () => 'organisation-info/license',
       providesTags: () => ['organisationInfo'],
+      transformResponse: (data: License[]) => {
+        const [license] = data;
+        return license;
+      },
     }),
-    getInfo: build.query<OrganisationInfo[], void>({
+    getInfo: build.query<OrganisationInfo, void>({
       query: () => 'organisation-info/info',
       providesTags: () => ['organisationInfo'],
+      transformResponse: (data: OrganisationInfo[]) => {
+        const [info] = data;
+        return info;
+      },
     }),
-    getScheduleCompany: build.query<ScheduleCompany[], void>({
+    getScheduleCompany: build.query<ScheduleCompany, void>({
       query: () => 'organisation-info/schedule',
       providesTags: () => ['organisationInfo'],
+      transformResponse: (data: ScheduleCompany[]) => {
+        const [schedule] = data;
+        return schedule;
+      },
     }),
   }),
 });

@@ -4,8 +4,6 @@ import { Box, Grid, Link, styled, Typography } from '@mui/material';
 import { publicNavigation } from '@routes/navigation/public-navigation.tsx';
 import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 
-// @ts-ignore
-import vk from '../../../../public/images/svg/vk.svg';
 import { OrganisationInfo } from '@models/OrganisationInfo.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
@@ -104,7 +102,9 @@ const Footer = () => {
       <Container>
         <Grid container spacing={2}>
           <Grid item mobile={12} desktop={3} mr={2}>
-            <CompanyBlockStyle variant='h5'>УК "Партнёр Сервис"</CompanyBlockStyle>
+            <CompanyBlockStyle variant='h2' sx={{ fontWeight: 'bold' }}>
+              УК "Партнёр Сервис"
+            </CompanyBlockStyle>
             <NavList
               sx={{ flexDirection: 'column', alignItems: 'start' }}
               variant='custom'
@@ -125,11 +125,11 @@ const Footer = () => {
                   routes={publicNavigation}
                 />
                 <Link href={'/'} title='ВКонтатке'>
-                  <img src={vk} alt='ВКонтакте' />
+                  <img src={'./images/svg/vk.svg'} alt='ВКонтакте' />
                 </Link>
               </Box>
               <Divider sx={{ marginBottom: '20px' }} />
-              <Box>{data && <FooterList data={data} />}</Box>
+              <Box>{data && <FooterList data={[data]} />}</Box>
             </Box>
           </Grid>
         </Grid>

@@ -68,7 +68,8 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17 }): ReactNod
               balloonContentHeader={null}
               balloonContent={`<span class='bold'>Адрес: </span><span class='content'>${getShortAddress(
                 el.full_address
-              )}</span></br><a href='/api/houses/${el.id}'>Подробнее</a>`}
+              )}</span></br><div id='house-link'></div>`}
+              element={el}
             />
           ))
         ) : (
