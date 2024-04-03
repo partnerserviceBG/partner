@@ -44,6 +44,8 @@ const Info = sequelize.define("info", {
   locationOfControls: { type: DataTypes.JSON },
   //Контактные телефоны диспетчерской службы
   dispatcherContacts: { type: DataTypes.JSON },
+  //Часы работы диспетчерской службы
+  dispatcherOperatingHours: { type: DataTypes.JSON },
 });
 
 const License = sequelize.define("license", {

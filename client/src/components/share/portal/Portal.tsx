@@ -1,23 +1,12 @@
-import { ReactPortal, useEffect } from 'react';
+import { ReactNode, ReactPortal } from 'react';
 import { createPortal } from 'react-dom';
 
-export const Portal = ({ children, elementId }: Partial<ReactPortal> & { elementId: string }): ReactPortal | null => {
-  // находим искомый HTML по id
-  const mount = document.getElementById(elementId);
-  // создаём свой div
-  const el = document.createElement('div');
-
-  useEffect(() => {
-    // добавляем свой див к искомому элементу
-    if (mount) mount.appendChild(el);
-    return () => {
-      // удаляем элемент от искомого при завершении компоненты
-      if (mount) mount.removeChild(el);
-    };
-  }, [el, mount]);
-
-  // отменяем отрисовку при отсутствии искомого элемента
-  if (!mount) return null;
-  // собственно, пририсовываем React-элемент в div к искомому HTML
-  return createPortal(children, el);
+export const Portal = ({
+  children,
+  container,
+}: {
+  children: ReactNode;
+  container: Element | DocumentFragment;
+}): ReactPortal | null => {
+  return createPortal(children, container);
 };

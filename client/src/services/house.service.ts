@@ -9,6 +9,9 @@ export const housesApi = createApi({
   endpoints: (build) => ({
     getHouses: build.query<House[], void>({
       query: () => 'houses',
+      transformResponse: (data: House[]) => {
+        return [...data].sort((a, b) => a.full_address.localeCompare(b.full_address));
+      },
       providesTags: () => ['Houses'],
     }),
     getHouse: build.query<House, string | undefined>({

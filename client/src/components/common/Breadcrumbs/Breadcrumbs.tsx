@@ -7,6 +7,8 @@ import { useGetPostsQuery } from '@services/post.service.ts';
 import { Container } from '@components/common';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
 import { Box } from '@mui/material';
+import { RoutesNavType } from '@utils/types.ts';
+import { getAllChildren } from '@utils/utils.ts';
 
 export const BreadCrumbs = () => {
   const location = useLocation();
@@ -14,8 +16,10 @@ export const BreadCrumbs = () => {
   const { data: news } = useGetPostsQuery();
   const pathNames = location.pathname.split(/[/]/).filter((x) => x);
 
-  const navigationPath = [...publicNavigation, ...privateNavigation, ...publicInfoNavigation];
-  const getPath = (path: string) => {
+  const navigationPath: RoutesNavType[] = [...publicNavigation, ...privateNavigation, ...publicInfoNavigation];
+
+  const getPathTranslate = (path: string) => {
+    const flattenNavigation = getAllChildren(navigationPath);
     const getPathById = () => {
       switch (pathNames[0]) {
         case 'news':
@@ -24,8 +28,8 @@ export const BreadCrumbs = () => {
           return houses?.find((el) => el.id === Number(path))?.full_address;
       }
     };
-    return navigationPath.find((el) => el.path.includes(path))?.name
-      ? navigationPath.find((el) => el.path.includes(path))?.name
+    return flattenNavigation.find((el) => el.path.includes(path))?.name
+      ? flattenNavigation.find((el) => el.path.includes(path))?.name
       : getPathById();
   };
 
@@ -45,11 +49,11 @@ export const BreadCrumbs = () => {
           {pathNames
             .map((path) => (
               <NavLink key={path} to={path}>
-                {getPath(path)}
+                {getPathTranslate(path)}
               </NavLink>
             ))
             .slice(0, pathNames.length - 1)}
-          {pathNames.map((path) => <Box key={path}>{getPath(path)}</Box>).slice(pathNames.length - 1)}
+          {pathNames.map((path) => <Box key={path}>{getPathTranslate(path)}</Box>).slice(pathNames.length - 1)}
         </Breadcrumbs>
       </Container>
     );

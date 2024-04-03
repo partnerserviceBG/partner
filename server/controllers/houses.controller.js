@@ -6,7 +6,10 @@ class HousesController {
   async getAll(req, res, next) {
     const data = await axios
       .get("https://api.rias-gkh.ru/v2.0/houses", {
-        params: { "access-token": "a4a6a69cd5e5506fa64d" },
+        params: {
+          "access-token": "a4a6a69cd5e5506fa64d",
+          expand: "entrances, rooms",
+        },
       })
       .then((response) => {
         return response.data;

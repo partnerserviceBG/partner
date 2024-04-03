@@ -61,6 +61,7 @@ class OrganisationInfoService {
       "Нижегородская обл, р-н. Богородский, г. Богородск, ул. Ленина, д. 101";
     const dispatcherContacts = "+7 (83170) 2-16-54";
     const director = "Кальмин Денис Александрович";
+    const dispatcherOperatingHours = "Круглосуточно";
 
     return await Info.create({
       director: {
@@ -111,6 +112,10 @@ class OrganisationInfoService {
       dispatcherContacts: {
         field: "Контактные телефоны диспетчерской службы",
         value: dispatcherContacts,
+      },
+      dispatcherOperatingHours: {
+        field: "Часы работы диспетчера",
+        value: dispatcherOperatingHours,
       },
     });
   }
