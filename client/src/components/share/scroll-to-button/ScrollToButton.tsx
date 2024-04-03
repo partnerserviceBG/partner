@@ -35,7 +35,7 @@ export const ScrollToButton: FC = () => {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'fixed',
-          right: '60px',
+          right: '15px',
           bottom: '50px',
           width: '40px',
           height: '40px',

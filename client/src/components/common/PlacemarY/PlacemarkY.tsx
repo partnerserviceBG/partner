@@ -1,31 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './styles/_placemark.scss';
 import { Placemark } from '@pbe/react-yandex-maps';
-import { styled, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { House } from '@models/House.ts';
-import { NavLink } from 'react-router-dom';
-import { Portal } from '@components/share/portal/Portal.tsx';
-
 export interface PlacemarkYProps {
   geometry?: number[];
   hintContent?: string;
   balloonContentHeader?: string | null;
   balloonContent?: string;
   element?: House;
+  onPlacemarkYClick?: (house?: House) => void;
 }
-
-const NavItem = styled(NavLink)(({ theme }) => {
-  return {
-    transition: 'all 0.2s linear',
-    color: theme.palette.primary.main,
-    textDecoration: 'underline',
-    fontWeight: 'bold',
-    '&:hover': {
-      opacity: 0.7,
-      textDecoration: 'none',
-    },
-  };
-});
 
 const defaultHintContent = 'УК "Партнёр сервис"';
 
@@ -35,6 +20,7 @@ const defaultBalloonContent = `<span class='bold'>Адрес: </span><span class
 </br><span class='bold'>Часы работы: </span><span class='content'>Понедельник-Пятница: с 07:00 до 16:00</span>
 </br><span class='bold'>Перерыв: </span><span class='content'>11:00 - 12:00</span>
 </br><span class='bold'>Выходной: </span><span class='content'>Суббота - Воскресенье</span> 
+</br><span class='bold'>Часы работы диспетчера: </span><span class='dispatcher'>Круглосуточно</span> 
 `;
 
 export const PlacemarkY: React.FC<PlacemarkYProps> = ({
@@ -43,9 +29,9 @@ export const PlacemarkY: React.FC<PlacemarkYProps> = ({
   balloonContentHeader = defaultBalloonContentHeader,
   balloonContent = defaultBalloonContent,
   element,
+  onPlacemarkYClick,
 }) => {
   const theme = useTheme();
-  const [activePortal, setActivePortal] = useState(false);
   return (
     <>
       <Placemark
@@ -57,23 +43,13 @@ export const PlacemarkY: React.FC<PlacemarkYProps> = ({
         }}
         modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
         options={{
-          iconLayout: 'default#image',
-          iconImageHref: './images/png/marker.png',
-          iconImageSize: [32, 32],
+          balloonMinHeight: 40,
           iconColor: theme.palette.primary.main,
-          preset: 'islands#blackStretchyIcon',
         }}
         onClick={() => {
-          setTimeout(() => {
-            setActivePortal(true);
-          }, 0);
+          onPlacemarkYClick && onPlacemarkYClick(element);
         }}
       />
-      {activePortal && (
-        <Portal elementId={'house-link'}>
-          <NavItem to={`${element?.id}`}>{'Подробнее'}</NavItem>
-        </Portal>
-      )}
     </>
   );
 };

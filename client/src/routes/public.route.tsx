@@ -4,7 +4,7 @@ import { Home } from '@pages/home/home.tsx';
 import { About } from '@pages/about/about.tsx';
 import { House } from '@components/ui/Houses/house/house.tsx';
 import { Vacancy } from '@pages/vacancy/vacancy.tsx';
-import { Disclosure } from '@pages/disclosure/disclosure.tsx';
+import { DisclosurePage } from '@pages/disclosure/DisclosurePage.tsx';
 import { Contacts } from '@pages/contacts/Contacts.tsx';
 import { NewsPage } from '@pages/news/NewsPage.tsx';
 import { HousesPage } from '@pages/houses/HousesPage.tsx';
@@ -12,7 +12,12 @@ import { News } from '@components/ui/News/news/news.tsx';
 import { InfoPage } from '@pages/info/infoPage.tsx';
 import { LicensePage } from '@pages/license/LicensePage.tsx';
 import { AgreementPage } from '@pages/agreement/AgreementPage.tsx';
-export const publicRoute = [
+import { Questionnaire } from '@components/ui/Disclosure/Questionnaire/Questionnaire.tsx';
+import { GeneralInfo } from '@components/ui/Disclosure/GeneralInfo/GeneralInfo.tsx';
+import { Mkd } from '@components/ui/Disclosure/Mkd/Mkd.tsx';
+import { RouteObject } from 'react-router-dom';
+
+export const publicRoute: RouteObject[] = [
   { path: 'login', element: <Login /> },
   {
     path: '/',
@@ -41,7 +46,21 @@ export const publicRoute = [
         ],
       },
       { path: 'vacancy', element: <Vacancy /> },
-      { path: 'disclosure', element: <Disclosure /> },
+      {
+        path: 'disclosure',
+        element: <DisclosurePage />,
+        children: [
+          {
+            path: '',
+            element: <GeneralInfo />,
+          },
+          {
+            path: 'questionnaire',
+            element: <Questionnaire />,
+          },
+          { path: 'mkd', element: <Mkd /> },
+        ],
+      },
       { path: 'info', element: <InfoPage /> },
       { path: 'contacts', element: <Contacts /> },
       { path: 'license', element: <LicensePage /> },

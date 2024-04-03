@@ -116,7 +116,7 @@ const Footer = () => {
               <Box>
                 <NavList
                   sx={{
-                    flexDirection: { mobile: 'column', laptop: 'row' },
+                    flexDirection: { mobile: 'column', tablet: 'row' },
                     display: 'flex',
                     alignItems: 'flex-start',
                     marginBottom: '20px',

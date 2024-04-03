@@ -4,9 +4,9 @@ class OrganisationInfoController {
   async getAll(req, res, next) {
     const license = await License.findAll();
     const info = await Info.findAll();
-    const operatingMode = await Schedule.findAll();
+    const schedule = await Schedule.findAll();
     try {
-      return res.json({ license, info, operatingMode });
+      return res.json([...license, ...info, ...schedule]);
     } catch (error) {
       next(error);
     }

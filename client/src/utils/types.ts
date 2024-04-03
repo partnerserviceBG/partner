@@ -8,6 +8,8 @@ export type RoutesNavType = {
   icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
     muiName: string;
   };
+  parent?: RoutesNavType;
+  children?: RoutesNavType[];
 };
 
 export type SignInDataType = {

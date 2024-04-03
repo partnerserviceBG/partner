@@ -1,5 +1,6 @@
 import { createTheme, Theme } from '@mui/material';
 import { breakpoints, typography } from '@styles/mui-modules/modules.ts';
+import { hexToRgbA } from '@styles/utils/utils.ts';
 
 const defaultThemesSettings = {
   unstable_strictMode: true,
@@ -23,7 +24,8 @@ const light = createTheme({
       contrastText: '#505050',
     },
     info: {
-      main: 'rgba(253, 126, 20, 0.5)',
+      main: `${hexToRgbA('#fd7e14', 0.5)}`,
+      light: `${hexToRgbA('#fd7e14', 0.3)}`,
     },
     warning: {
       main: '#f50057',
@@ -44,6 +46,10 @@ const dark = createTheme({
       dark: '#000000',
       contrastText: '#505050',
     },
+    info: {
+      main: `${hexToRgbA('#525252', 0.5)}`,
+      light: `${hexToRgbA('#525252', 0.3)}`,
+    },
     warning: {
       main: '#f50057',
     },
@@ -59,6 +65,10 @@ const purple = createTheme({
       light: '#FFFFFF',
       dark: '#000000',
       contrastText: '#505050',
+    },
+    info: {
+      main: `${hexToRgbA('#0926b6', 0.5)}`,
+      light: `${hexToRgbA('#0926b6', 0.3)}`,
     },
     warning: {
       main: '#f50057',
@@ -127,7 +137,45 @@ const getStyleOverrides = (theme: Theme) => {
             border: `1px solid ${theme.palette.primary.main}`,
           },
         },
+        {
+          props: { variant: 'routes' },
+          style: {
+            border: `1px solid ${theme.palette.primary.main}`,
+          },
+        },
       ],
+    },
+    MuiBottomNavigation: {
+      styleOverrides: {
+        root: {
+          [theme.breakpoints.down('laptop')]: {
+            justifyContent: 'center',
+          },
+          height: 'fit-content',
+          justifyContent: 'start',
+          flexWrap: 'wrap',
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          transition: 'all 0.2s linear',
+          width: '100%',
+          maxWidth: '200px',
+          minWidth: '200px',
+          border: `2px solid ${theme.palette.info.light}`,
+          height: '56px',
+          '&:hover': {
+            color: `${theme.palette.primary.main}`,
+            border: `2px solid ${theme.palette.primary.main}`,
+          },
+          '&.Mui-selected': {
+            color: `${theme.palette.primary.light}`,
+            background: `${theme.palette.primary.main}`,
+          },
+        },
+      },
     },
     MuiTypography: {
       variants: [
@@ -164,9 +212,71 @@ const getStyleOverrides = (theme: Theme) => {
         },
       ],
     },
+    MuiTabs: {
+      styleOverrides: {
+        flexContainer: {
+          alignItems: 'center',
+        },
+        indicator: {
+          left: '0',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        body: {
+          // @ts-ignore
+          fontSize: theme.typography['tableCell'].fontSize,
+          // @ts-ignore
+          lineHeight: theme.typography['tableCell'].lineHeight,
+          // @ts-ignore
+          fontWeight: theme.typography['tableCell'].fontWeight,
+          borderBottom: `1px solid ${theme.palette.info.light}`,
+        },
+        head: {
+          // @ts-ignore
+          fontSize: theme.typography['tableCell'].fontSize,
+          // @ts-ignore
+          lineHeight: theme.typography['tableCell'].lineHeight,
+          // @ts-ignore
+          fontWeight: 'bold',
+          color: `${theme.palette.primary.main}`,
+        },
+      },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          // @ts-ignore
+          fontSize: theme.typography['tableCell'].fontSize,
+          // @ts-ignore
+          lineHeight: theme.typography['tableCell'].lineHeight,
+          // @ts-ignore
+          fontWeight: 400,
+          borderBottom: `2px solid ${theme.palette.primary.main}`,
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:last-child td': {
+            border: 0,
+          },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          '& g': {
+            fill: theme.palette.primary.main,
+          },
+        },
+      },
+    },
   };
 };
-
 export const lightTheme = createTheme(light, {
   components: {
     ...getStyleOverrides(light),

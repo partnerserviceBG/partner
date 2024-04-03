@@ -40,12 +40,11 @@ declare module '@mui/material/Typography' {
     subtitle: true;
     caption: true;
     p: true;
-    field: true;
-    filedValue: true;
     border_bottom: true;
     description: true;
     description_large: true;
     date: true;
+    tableCell: true;
   }
 }
 export const typography = {
@@ -89,5 +88,10 @@ export const typography = {
     fontSize: '2.125rem',
     fontWeight: 'bold',
     lineHeight: '2.75rem',
+  },
+  tableCell: {
+    fontSize: '0.875rem',
+    lineHeight: '1.375rem',
+    fontWeight: 400,
   },
 };

@@ -17,8 +17,9 @@ export interface MapYProps {
   onLoadGeoMap?: (ymaps: YMapsApi) => void;
   data?: House[];
   zoom?: number;
+  onPlacemarkYClick?: (house?: House) => void;
 }
-export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17 }): ReactNode => {
+export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17, onPlacemarkYClick }): ReactNode => {
   return (
     <YMaps
       query={{
@@ -37,7 +38,7 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17 }): ReactNod
           // @ts-ignore
           ref && ref.behaviors.disable('scrollZoom');
         }}
-        modules={['templateLayoutFactory', 'layout.ImageWithContent', 'geocode']}
+        modules={['geocode']}
         onLoad={onLoadGeoMap}
       >
         <ZoomControl options={{ position: { top: 108, left: 10 } }} />
@@ -68,8 +69,9 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17 }): ReactNod
               balloonContentHeader={null}
               balloonContent={`<span class='bold'>Адрес: </span><span class='content'>${getShortAddress(
                 el.full_address
-              )}</span></br><div id='house-link'></div>`}
+              )}</span></br><span id='house-link'></span>`}
               element={el}
+              onPlacemarkYClick={onPlacemarkYClick}
             />
           ))
         ) : (
