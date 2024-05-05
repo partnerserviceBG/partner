@@ -3,14 +3,15 @@ const ApiError = require("../error/api-error");
 
 class PostsController {
   async createPost(req, res, next) {
-    const { title, content } = req.body;
-    const image = req.file?.path || null;
+    const { title, content, housesId } = req.body;
+    const image = req.file?.path || `Images/default_news_img.jpg`;
     try {
       const user = await User.findByPk(req.user.id);
       const post = await Post.create({
         title,
         content,
         image,
+        housesId,
         userId: user.id,
       });
       res.status(201).json(post);
@@ -30,13 +31,14 @@ class PostsController {
 
   async updatePost(req, res, next) {
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, content, housesId } = req.body;
     const image = req.file?.path || null;
     try {
       const post = await Post.findByPk(id);
       if (post) {
         post.title = title;
         post.content = content;
+        post.housesId = housesId;
         if (image) {
           post.image = image;
         }

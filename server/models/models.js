@@ -5,9 +5,10 @@ const bcrypt = require("bcrypt");
 const Post = sequelize.define("post", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: { type: DataTypes.STRING, allowNull: false },
-  content: { type: DataTypes.TEXT, allowNull: false },
+  content: { type: DataTypes.TEXT, allowNull: true },
   image: { type: DataTypes.STRING, allowNull: true },
   userId: { type: DataTypes.INTEGER, allowNull: false },
+  housesId: { type: DataTypes.JSON, allowNull: true },
 });
 
 const User = sequelize.define("user", {

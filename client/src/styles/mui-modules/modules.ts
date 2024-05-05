@@ -13,9 +13,9 @@ declare module '@mui/material/styles' {
   }
 }
 
-declare module '@mui/material/Button' {
-  interface ButtonPropsVariantOverrides {
-    back: true;
+declare module '@mui/material/Tab' {
+  interface TabPropsOverrides {
+    buttons: true;
   }
 }
 
@@ -82,7 +82,7 @@ export const typography = {
     lineHeight: '1.57rem',
   },
   date: {
-    fontSize: '0.75rem',
+    fontSize: '0.875rem',
   },
   body2: {
     fontSize: '2.125rem',

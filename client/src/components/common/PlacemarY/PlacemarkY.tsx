@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/_placemark.scss';
 import { Placemark } from '@pbe/react-yandex-maps';
 import { useTheme } from '@mui/material';
-import { House } from '@models/House.ts';
+import { House } from '@models/Rias-models/House/House.ts';
 export interface PlacemarkYProps {
   geometry?: number[];
   hintContent?: string;

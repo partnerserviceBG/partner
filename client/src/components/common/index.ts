@@ -4,4 +4,5 @@ import Footer from '@components/common/Footer/Footer';
 import Header from '@components/common/Header/Header';
 import { NavList } from '@components/common/NavList/NavList';
 import { BreadCrumbs } from '@components/common/Breadcrumbs/Breadcrumbs.tsx';
-export { Container, Divider, Footer, NavList, Header, BreadCrumbs };
+import { BoxLineClamp } from '@components/common/BoxLineClamp/BoxLineClamp.tsx';
+export { Container, Divider, Footer, NavList, Header, BreadCrumbs, BoxLineClamp };

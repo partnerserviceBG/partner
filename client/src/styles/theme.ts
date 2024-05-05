@@ -5,9 +5,9 @@ import { hexToRgbA } from '@styles/utils/utils.ts';
 const defaultThemesSettings = {
   unstable_strictMode: true,
   typography: {
+    ...typography,
     htmlFontSize: 16,
     fontFamily: 'Segoe UI',
-    ...typography,
   },
   breakpoints: {
     ...breakpoints,
@@ -53,6 +53,9 @@ const dark = createTheme({
     warning: {
       main: '#f50057',
     },
+    grey: {
+      50: '#6d6d6d',
+    },
   },
   ...defaultThemesSettings,
 });
@@ -73,12 +76,35 @@ const purple = createTheme({
     warning: {
       main: '#f50057',
     },
+    grey: {
+      50: '#6d6d6d',
+    },
   },
   ...defaultThemesSettings,
 });
 
 const getStyleOverrides = (theme: Theme) => {
   return {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          '& ::-webkit-scrollbar': {
+            width: '0.2em',
+            height: '0.3em'
+          },
+          '& ::-webkit-scrollbar-track': {
+            '-webkit-box-shadow': theme.palette.info.light
+          },
+          '& ::-webkit-scrollbar-thumb': {
+            backgroundColor: theme.palette.info.light,
+            outline: 'none'
+          },
+          '& ::-webkit-scrollbar-thumb:hover': {
+            cursor: 'pointer'
+          },
+        },
+      },
+    },
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
@@ -93,6 +119,9 @@ const getStyleOverrides = (theme: Theme) => {
     },
     MuiBreadcrumbs: {
       styleOverrides: {
+        root: {
+          width: '100%'
+        },
         ol: {
           '&::before': {
             content: '""',
@@ -145,38 +174,6 @@ const getStyleOverrides = (theme: Theme) => {
         },
       ],
     },
-    MuiBottomNavigation: {
-      styleOverrides: {
-        root: {
-          [theme.breakpoints.down('laptop')]: {
-            justifyContent: 'center',
-          },
-          height: 'fit-content',
-          justifyContent: 'start',
-          flexWrap: 'wrap',
-        },
-      },
-    },
-    MuiBottomNavigationAction: {
-      styleOverrides: {
-        root: {
-          transition: 'all 0.2s linear',
-          width: '100%',
-          maxWidth: '200px',
-          minWidth: '200px',
-          border: `2px solid ${theme.palette.info.light}`,
-          height: '56px',
-          '&:hover': {
-            color: `${theme.palette.primary.main}`,
-            border: `2px solid ${theme.palette.primary.main}`,
-          },
-          '&.Mui-selected': {
-            color: `${theme.palette.primary.light}`,
-            background: `${theme.palette.primary.main}`,
-          },
-        },
-      },
-    },
     MuiTypography: {
       variants: [
         {
@@ -212,6 +209,28 @@ const getStyleOverrides = (theme: Theme) => {
         },
       ],
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          '&.variant_button': {
+            transition: 'all 0.2s linear',
+            width: '100%',
+            maxWidth: '200px',
+            minWidth: 'fit-content',
+            border: `2px solid ${theme.palette.info.light}`,
+            height: '56px',
+            '&:hover': {
+              color: `${theme.palette.primary.main}`,
+              border: `2px solid ${theme.palette.primary.main}`,
+            },
+            '&.Mui-selected': {
+              color: `${theme.palette.primary.light}`,
+              background: `${theme.palette.primary.main}`,
+            },
+          }
+        }
+      }
+    },
     MuiTabs: {
       styleOverrides: {
         flexContainer: {
@@ -232,6 +251,16 @@ const getStyleOverrides = (theme: Theme) => {
           // @ts-ignore
           fontWeight: theme.typography['tableCell'].fontWeight,
           borderBottom: `1px solid ${theme.palette.info.light}`,
+          '&.heading': {
+            fontSize: theme.typography.h4.fontSize,
+            color: theme.palette.primary.main,
+            fontWeight: 'bold',
+            paddingLeft: '30px',
+            '&::after': {
+              content: '":"',
+              marginLeft: "2px"
+            }
+          }
         },
         head: {
           // @ts-ignore
@@ -266,15 +295,83 @@ const getStyleOverrides = (theme: Theme) => {
         },
       },
     },
+    MuiTablePagination: {
+      styleOverrides: {
+        actions: {
+          marginLeft: '5px',
+          'button': {
+            padding: '2px',
+            '&:hover': {
+              backgroundColor: theme.palette.info.light
+            }
+          }
+        },
+        displayedRows: {
+          [theme.breakpoints.down('tablet')]: {
+            fontSize: theme.typography.caption.fontSize,
+          },
+          fontSize: theme.typography.h4.fontSize
+        },
+        selectLabel: {
+          [theme.breakpoints.down('tablet')]: {
+            fontSize: theme.typography.caption.fontSize,
+          },
+          fontSize: theme.typography.h4.fontSize
+        },
+        input: {
+          backgroundColor: theme.palette.info.light
+        },
+        menuItem: {
+          '&:hover': {
+            backgroundColor: theme.palette.info.light
+          }
+        }
+      }
+    },
     MuiSvgIcon: {
       styleOverrides: {
         root: {
+          fill: theme.palette.info.main,
           '& g': {
-            fill: theme.palette.primary.main,
+            fill: theme.palette.info.main,
           },
+          '&:hover': {
+            fill: theme.palette.primary.main,
+            '& g': {
+              fill: theme.palette.primary.main,
+            }
+          }
         },
       },
     },
+    MuiCardActionArea: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            transition: 'all 0.3s linear',
+            opacity: 0.7,
+            '&::after': {
+              content: "''",
+              position: 'absolute',
+              top: 0,
+              width: '100%',
+              height: '100%',
+              opacity: 0.5,
+              backgroundColor: theme.palette.primary.main
+            },
+            '&::before': {
+              content: "''",
+              position: 'absolute',
+              top: 0,
+              width: '100%',
+              height: '100%',
+              background: `url(./images/png/imgBack.png) 50% 50% no-repeat`,
+              zIndex: 100,
+            }
+          }
+        }
+      }
+    }
   };
 };
 export const lightTheme = createTheme(light, {

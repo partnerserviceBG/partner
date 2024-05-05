@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { PlacemarkY } from '@components/common/PlacemarY/PlacemarkY.tsx';
-import { House } from '@models/House.ts';
+import { House } from '@models/Rias-models/House/House.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
 import {
@@ -16,10 +16,12 @@ import {
 export interface MapYProps {
   onLoadGeoMap?: (ymaps: YMapsApi) => void;
   data?: House[];
+  house?: House;
   zoom?: number;
+  height?: number;
   onPlacemarkYClick?: (house?: House) => void;
 }
-export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17, onPlacemarkYClick }): ReactNode => {
+export const MapY: FC<MapYProps> = ({ onLoadGeoMap, height, data, house, zoom = 17, onPlacemarkYClick }): ReactNode => {
   return (
     <YMaps
       query={{
@@ -29,7 +31,7 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17, onPlacemark
     >
       <Map
         width='100%'
-        height='500px'
+        height={height ? `${height}px` : '500px'}
         defaultState={{
           center: [56.101303, 43.501151],
           zoom,
@@ -74,7 +76,14 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, data, zoom = 17, onPlacemark
               onPlacemarkYClick={onPlacemarkYClick}
             />
           ))
-        ) : (
+        ) : house ? <PlacemarkY
+          geometry={house.geometry}
+          hintContent={`<span class='bold'>${getShortAddress(house.full_address)}</span> `}
+          balloonContentHeader={null}
+          balloonContent={`<span class='bold'>Адрес: </span><span class='content'>${getShortAddress(
+            house.full_address
+          )}`}
+        /> : (
           <PlacemarkY />
         )}
       </Map>

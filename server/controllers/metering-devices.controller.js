@@ -7,6 +7,8 @@ class MeteringDevicesController {
     await axios
       .get("https://api.rias-gkh.ru/v2.0/metering-devices", {
         params: {
+          expand: "errors, premise, room, houseOwnership, resources, resources.municipalResource, readings, verificationInterval",
+          limit: '1000',
           "access-token": "a4a6a69cd5e5506fa64d",
         },
       })
@@ -19,11 +21,12 @@ class MeteringDevicesController {
       });
   }
 
-  async getOne(req, res, next) {
+  async getOne(req, res) {
     await axios
       .get(`https://api.rias-gkh.ru/v2.0/metering-devices/${req.params.id}`, {
         params: {
           "access-token": "a4a6a69cd5e5506fa64d",
+          expand: "errors, premise, room, houseOwnership, resources, resources.municipalResource, readings, verificationInterval",
         },
       })
       .then((response) => {
@@ -31,7 +34,6 @@ class MeteringDevicesController {
       })
       .catch((error) => {
         console.error(error);
-        next(ApiError.internal("Ошибка сервера"));
       });
   }
 }

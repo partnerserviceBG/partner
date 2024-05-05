@@ -1,7 +1,10 @@
 export interface Post {
-  id: number;
-  title?: string;
+  id: string | number;
+  title: string;
   content?: string;
   image?: string;
-  userId: number;
+  userId?: string;
+  housesId?: string[];
+  updatedAt?: string,
+  createdAt?: string,
 }
