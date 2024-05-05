@@ -16,7 +16,7 @@ const baseQueryAuth = fetchBaseQuery({
   },
 });
 
-export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+export const baseQueryWithReAuth:  BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
   extraOptions
@@ -38,6 +38,7 @@ export const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, Fetch
       result = await baseQueryAuth(args, api, extraOptions);
     } else {
       removeAuthData();
+      window.location.pathname = '/login'
     }
   }
 

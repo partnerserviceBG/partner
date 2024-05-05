@@ -8,7 +8,7 @@ class UserController {
       const userData = await userService.login(email, password);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      next(ApiError.forbidden(e.message));
     }
   }
 
@@ -28,7 +28,7 @@ class UserController {
       const userData = await userService.refresh(refreshToken);
       return res.json(userData);
     } catch (e) {
-      next(e);
+      next(ApiError.unauthorized(e.message));
     }
   }
   async getUsers(req, res, next) {

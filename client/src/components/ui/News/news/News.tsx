@@ -22,6 +22,7 @@ export const News: FC = (): ReactNode => {
             height: '50%', marginRight: '30px', position: 'relative',
           }}
           image={`${environments.imageUrl}${data?.image}`}
+          src={`${environments.imageUrl}${data?.image}`}
           alt={`${data?.title}`}
         />
         <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -34,6 +35,7 @@ export const News: FC = (): ReactNode => {
                sx={{ width: '100%', wordBreak: 'break-word' }}>{data?.content}</Box>
         </CardContent>
         <Button onClick={() => navigate(-1)} title='Вернуться к списку новостей' sx={{marginBottom: '60px'}}>{'Вернуться к списку новостей'}</Button>
-      </Box>}
+      </Box>
+    }
   </Container>;
 };

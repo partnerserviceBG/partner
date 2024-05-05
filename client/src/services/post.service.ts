@@ -1,5 +1,5 @@
 import { Post } from '@models/Post';
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReAuth } from '@store/utils/baseQueryAuth';
 
 export const postsApi = createApi({
@@ -34,7 +34,7 @@ export const postsApi = createApi({
       }),
       invalidatesTags: ['Posts'],
     }),
-    deletePost: build.mutation<{ success: boolean; id: number }, number>({
+    deletePost: build.mutation<{error: FetchBaseQueryError} | {message: string}, number>({
       query(id) {
         return {
           url: `posts/${id}`,
