@@ -80,23 +80,6 @@ class PostsController {
       next(ApiError.internal("Ошибка удаления поста"));
     }
   }
-
-  async uploadPhoto(req, res, next) {
-    const { id } = req.params;
-    const { filename } = req.file;
-    try {
-      const post = await Post.findByPk(id);
-      if (post) {
-        post.photo = filename;
-        await post.save();
-        res.json(post);
-      } else {
-        next(ApiError.badRequest("Пост отсутствует"));
-      }
-    } catch (error) {
-      next(ApiError.internal("Ошибка загрузки изображения"));
-    }
-  }
 }
 
 module.exports = new PostsController();
