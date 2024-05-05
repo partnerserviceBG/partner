@@ -20,6 +20,7 @@ export const ThemeSettings: FC = (): ReactNode => {
   const handleTheme = (value: Themes): void => {
     if (!theme.includes(value)) {
       setTheme(value);
+      handleClose();
     }
   };
 

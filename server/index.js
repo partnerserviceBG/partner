@@ -3,7 +3,6 @@ const express = require("express");
 const sequelize = require("./db");
 const cors = require("cors");
 const router = require("./routes/index");
-const errorHandler = require("./middleware/error-handling.middleware");
 const userService = require("./services/user.service");
 const HousesService = require("./services/houses.service");
 const organisationInfoService = require("./services/organisation-info.service");
@@ -17,8 +16,6 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1/", router);
-
-app.use(errorHandler);
 const start = async () => {
   try {
     await sequelize.authenticate();

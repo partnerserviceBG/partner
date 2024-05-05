@@ -5,6 +5,9 @@ import { usersApi } from '@services/user.service';
 import { managementContractsApi } from '@services/management-contracts.service.ts';
 import { meteringDevicesApi } from '@services/metering-devices.service.ts';
 import { organisationInfoApi } from '@services/organisation-info.service.ts';
+import { nsiApi } from '@services/nsi.service.ts';
+import { debtRequestApi } from '@services/debt-request.service.ts';
+import { appealsApi } from '@services/appeals.service.ts';
 
 const rootReducer = combineReducers({
   [postsApi.reducerPath]: postsApi.reducer,
@@ -13,6 +16,9 @@ const rootReducer = combineReducers({
   [managementContractsApi.reducerPath]: managementContractsApi.reducer,
   [meteringDevicesApi.reducerPath]: meteringDevicesApi.reducer,
   [organisationInfoApi.reducerPath]: organisationInfoApi.reducer,
+  [nsiApi.reducerPath]: nsiApi.reducer,
+  [debtRequestApi.reducerPath]: debtRequestApi.reducer,
+  [appealsApi.reducerPath]: appealsApi.reducer,
 });
 export const store = configureStore({
   reducer: rootReducer,
@@ -23,6 +29,9 @@ export const store = configureStore({
       usersApi.middleware,
       managementContractsApi.middleware,
       meteringDevicesApi.middleware,
-      organisationInfoApi.middleware
+      organisationInfoApi.middleware,
+      nsiApi.middleware,
+      debtRequestApi.middleware,
+      appealsApi.middleware,
     ),
 });

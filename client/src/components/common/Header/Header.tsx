@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { privateNavigation } from '@routes/navigation/private-navigation.tsx';
 import { useGetInfoQuery } from '@services/organisation-info.service.ts';
 import { NavLink } from 'react-router-dom';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 const CompanyStyle = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -138,10 +139,12 @@ const Header: React.FC = () => {
           </Box>
         )}
         {user && (
-          <Box className='admin'>
-            <Tooltip title='Админирстрирование'>
+          <Box sx={{ml: 6}}>
+            <Tooltip title='Администрирование'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar sx={{ bgcolor: theme.palette.info.light }} alt='Администрирование'>
+                  <AccountBoxIcon/>
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -160,7 +163,7 @@ const Header: React.FC = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <NavList variant='menu' sx={{ flexDirection: 'column' }} routes={privateNavigation} />
+              <NavList variant='menu' sx={{ flexDirection: 'column' }} routes={privateNavigation.filter(el => !el.hiddenRoute)} />
             </Menu>
           </Box>
         )}

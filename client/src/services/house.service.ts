@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { House } from '@models/House.ts';
+import { House } from '@models/Rias-models/House/House.ts';
 import { environments } from '@environments/environments.ts';
 
 export const housesApi = createApi({

@@ -7,8 +7,9 @@ class HousesController {
     const data = await axios
       .get("https://api.rias-gkh.ru/v2.0/houses", {
         params: {
+          "limit": '1000',
           "access-token": "a4a6a69cd5e5506fa64d",
-          expand: "entrances, rooms",
+          expand: "entrances, premises, devices",
         },
       })
       .then((response) => {
@@ -27,12 +28,12 @@ class HousesController {
     }
   }
 
-  async getOne(req, res, next) {
+  async getOne(req, res) {
     await axios
       .get(`https://api.rias-gkh.ru/v2.0/houses/${req.params.id}`, {
         params: {
           "access-token": "a4a6a69cd5e5506fa64d",
-          expand: "entrances",
+          expand: "devices, entrances, premises,rooms, resourceSupplyContracts, managementContracts, objectState, houseOwnershipAnnulmentReason, entrances.premises, entrances.premises.premiseCharacterstic",
         },
       })
       .then((response) => {
@@ -40,7 +41,6 @@ class HousesController {
       })
       .catch((error) => {
         console.error(error);
-        next(ApiError.internal("Ошибка сервера"));
       });
   }
 }

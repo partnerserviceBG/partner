@@ -1,11 +1,15 @@
-import { Box, styled } from '@mui/material';
+import { Box, styled, SvgIcon, SvgIconProps } from '@mui/material';
+
+const StyledSvg = styled(SvgIcon)(() => {
+  return {
+    width: '2em',
+    height: '2em',
+  };
+});
 
 const StyledBox = styled(Box)(({ theme }) => {
   return {
-    display: 'flex',
-    alignItems: 'center',
     position: 'relative',
-    marginBottom: '40px',
     '::before': {
       content: '""',
       position: 'absolute',
@@ -14,12 +18,12 @@ const StyledBox = styled(Box)(({ theme }) => {
       height: '60px',
       borderRadius: '50%',
       opacity: 0.4,
-      left: 10,
+      top: '-5px',
+      left: '20px'
     },
   };
 });
 
-// @ts-ignore
-export const StyledBoxByIcon = ({ children }) => {
-  return <StyledBox children={children} />;
+export const StyledSvgIconBox = (props: SvgIconProps) => {
+  return <StyledBox><StyledSvg  inheritViewBox {...props}/></StyledBox>
 };

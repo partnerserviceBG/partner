@@ -11,6 +11,7 @@ interface TabPanelProps {
 export const TabPanel: FC<TabPanelProps> = ({ children, value, index, ...other }) => {
   return (
     <div
+      style={{minWidth: '100%'}}
       role='tabpanel'
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}

@@ -7,8 +7,8 @@ class ManagementContractsController {
     await axios
       .get("https://api.rias-gkh.ru/v2.0/management-contracts", {
         params: {
+          "limit": '1000',
           "access-token": "a4a6a69cd5e5506fa64d",
-          expand: "protocols",
         },
       })
       .then((response) => {
@@ -27,7 +27,7 @@ class ManagementContractsController {
         {
           params: {
             "access-token": "a4a6a69cd5e5506fa64d",
-            expand: "Items",
+            expand: "protocols,  cooperative, municipalHousing, buildingOwner,  terminationReason, contractBase",
           },
         },
       )

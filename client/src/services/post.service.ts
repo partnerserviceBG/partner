@@ -10,12 +10,15 @@ export const postsApi = createApi({
     getPosts: build.query<Post[], void>({
       query: () => 'posts',
       providesTags: () => ['Posts'],
+      transformResponse: (data: Post[]) => {
+        return [...data].sort((a,b) => new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime());
+      },
     }),
     getPost: build.query<Post, string>({
       query: (id) => `posts/${id}`,
       providesTags: () => [{ type: 'Posts' }],
     }),
-    addPost: build.mutation<Post, Partial<Post>>({
+    addPost: build.mutation<Post, FormData>({
       query: (body) => ({
         url: `posts`,
         method: 'POST',
@@ -23,11 +26,11 @@ export const postsApi = createApi({
       }),
       invalidatesTags: ['Posts'],
     }),
-    updatePost: build.mutation<void, Pick<Post, 'id'> & Partial<Post>>({
-      query: ({ id, ...patch }) => ({
-        url: `posts/${id}`,
+    updatePost: build.mutation<Post, FormData>({
+      query: (body ) => ({
+        url: `posts/${body.get('id')}`,
         method: 'PUT',
-        body: patch,
+        body
       }),
       invalidatesTags: ['Posts'],
     }),
