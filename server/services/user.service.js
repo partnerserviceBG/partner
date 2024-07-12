@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const tokenService = require("./token.service");
 const UserDto = require("../dto/user.dto");
 const ApiError = require("../error/api-error");
-const { verify } = require("jsonwebtoken");
 
 class UserService {
   async login(email, password) {
