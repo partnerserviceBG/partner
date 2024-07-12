@@ -52,8 +52,8 @@ class UserService {
   }
 
   async createDefaultUser() {
-    const email = "52partner@rambler.ru";
-    const password = "partner-service";
+    const email = process.env.DEFAULT_ADMIN;
+    const password = process.env.DEFAULT_PASS;
 
     const existingUser = await User.findOne({ email });
 
