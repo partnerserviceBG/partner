@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import {
   useGetManagementContractQuery,
 } from '@services/management-contracts.service.ts';
+import { skipToken } from '@reduxjs/toolkit/query';
 import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { ManagementContractsStatus, ProtocolType } from '@utils/constants/constants.ts';
 
@@ -9,7 +10,19 @@ interface PContractsProps {
   contractId?: number | undefined;
 }
 export const CContracts: FC<PContractsProps> = ({contractId}) => {
-  const {data, isLoading} = useGetManagementContractQuery(contractId?.toString())
+  const {data, isLoading} = useGetManagementContractQuery(
+    contractId ? contractId.toString() : skipToken
+  )
+
+  if (!contractId) {
+    return <TableContainer component={Table} size='small'>
+      <TableBody>
+        <TableRow>
+          {<TableCell>{'Данные о договоре управления недоступны'}</TableCell>}
+        </TableRow>
+      </TableBody>
+    </TableContainer>;
+  }
 
   const contractsInfo = () => {
     return <TableContainer component={Table} size='small'>

@@ -4,6 +4,12 @@ const { extname } = require("path");
 const postsController = require("../controllers/posts.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const multer = require("multer");
+const { publicReadLimiter } = require("../middleware/rate-limit.middleware");
+const { requireRole } = require("../middleware/require-role.middleware");
+const {
+  validatePostsQuery,
+  validateIdParam,
+} = require("../middleware/query-validation.middleware");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -16,32 +22,36 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: "1000000" },
+  limits: { fileSize: 1_000_000 },
   fileFilter: (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png|svg/;
-    const mimeType = fileTypes.test(file.mimetype);
-    const extnameBool = fileTypes.test(extname(file.originalname));
+    const allowedMimeTypes = new Set(["image/jpeg", "image/png"]);
+    const allowedExtensions = new Set([".jpg", ".jpeg", ".png"]);
+    const extension = extname(file.originalname).toLowerCase();
+    const isValidMimeType = allowedMimeTypes.has(file.mimetype);
+    const isValidExtension = allowedExtensions.has(extension);
 
-    if (mimeType && extnameBool) {
+    if (isValidMimeType && isValidExtension) {
       return cb(null, true);
     }
-    cb("Give proper files formate to upload");
+    return cb(new Error("Unsupported file type"));
   },
 });
 
-router.get("/", postsController.getAllPosts);
-router.get("/:id", postsController.getPostById);
+router.get("/", publicReadLimiter, validatePostsQuery, postsController.getAllPosts);
+router.get("/:id", publicReadLimiter, validateIdParam, postsController.getPostById);
 router.post(
   "/",
   authMiddleware,
+  requireRole("admin"),
   upload.single("image"),
   postsController.createPost,
 );
 router.put(
   "/:id",
   authMiddleware,
+  requireRole("admin"),
   upload.single("image"),
   postsController.updatePost,
 );
-router.delete("/:id", authMiddleware, postsController.deletePost);
+router.delete("/:id", authMiddleware, requireRole("admin"), postsController.deletePost);
 module.exports = router;

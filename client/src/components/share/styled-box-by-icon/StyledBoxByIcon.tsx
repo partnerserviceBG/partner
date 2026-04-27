@@ -24,6 +24,23 @@ const StyledBox = styled(Box)(({ theme }) => {
   };
 });
 
-export const StyledSvgIconBox = (props: SvgIconProps) => {
+interface StyledSvgIconBoxProps extends SvgIconProps {
+  iconSrc?: string;
+  iconAlt?: string;
+}
+
+export const StyledSvgIconBox = ({ iconSrc, iconAlt, ...props }: StyledSvgIconBoxProps) => {
+  if (iconSrc) {
+    return (
+      <StyledBox>
+        <Box
+          component='img'
+          src={iconSrc}
+          alt={iconAlt || ''}
+          sx={{ width: '2em', height: '2em', display: 'block' }}
+        />
+      </StyledBox>
+    );
+  }
   return <StyledBox><StyledSvg  inheritViewBox {...props}/></StyledBox>
 };

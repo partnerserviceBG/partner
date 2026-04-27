@@ -8,6 +8,7 @@ import { OrganisationInfo } from '@models/OrganisationInfo.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { publicInfoNavigation } from '@routes/navigation/public-info-navigation.tsx';
 import SocialShare from '@components/share/social-share-block/SocialShare.tsx';
+import { VkIcon } from '@components/share/icons/VkIcon.tsx';
 
 interface FooterListProps<T> {
   data: T[];
@@ -124,8 +125,18 @@ const Footer = () => {
                   variant='footer'
                   routes={publicNavigation}
                 />
-                <Link href={'/'} title='ВКонтатке'>
-                  <img src={'./images/svg/vk.svg'} alt='ВКонтакте' />
+                <Link
+                  href={'/'}
+                  title='ВКонтакте'
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    '&:hover': {
+                      opacity: 0.7,
+                    },
+                  }}
+                >
+                  <VkIcon viewBox='0 0 48 48' fontSize='medium' />
                 </Link>
               </Box>
               <Divider sx={{ marginBottom: '20px' }} />

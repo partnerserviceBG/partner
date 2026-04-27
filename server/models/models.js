@@ -8,13 +8,25 @@ const Post = sequelize.define("post", {
   content: { type: DataTypes.TEXT, allowNull: true },
   image: { type: DataTypes.STRING, allowNull: true },
   userId: { type: DataTypes.INTEGER, allowNull: false },
-  housesId: { type: DataTypes.JSON, allowNull: true },
+});
+
+const PostHouse = sequelize.define("post_house", {
+  postId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: Post, key: "id" },
+  },
+  houseId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 const User = sequelize.define("user", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   email: { type: DataTypes.STRING, unique: true },
   password: { type: DataTypes.STRING, allowNull: false },
+  role: { type: DataTypes.STRING, allowNull: false, defaultValue: "admin" },
 });
 
 const Token = sequelize.define("token", {
@@ -73,7 +85,25 @@ const Schedule = sequelize.define("schedule", {
   },
 });
 
-const Houses = sequelize.define("houses");
+const Houses = sequelize.define("houses", {
+  riasId: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false,
+  },
+  payload: {
+    type: DataTypes.JSONB,
+    allowNull: false,
+  },
+  fullAddress: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  geometry: {
+    type: DataTypes.JSONB,
+    allowNull: true,
+  },
+});
 
 User.beforeCreate(async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
@@ -81,10 +111,13 @@ User.beforeCreate(async (user) => {
 
 User.hasMany(Post);
 Post.belongsTo(User);
+Post.hasMany(PostHouse, { foreignKey: "postId", as: "postHouses" });
+PostHouse.belongsTo(Post, { foreignKey: "postId" });
 Token.belongsTo(User);
 
 module.exports = {
   Post,
+  PostHouse,
   User,
   Token,
   License,

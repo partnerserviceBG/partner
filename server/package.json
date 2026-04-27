@@ -4,7 +4,10 @@
   "description": "partner-service",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "powershell -NoProfile -Command \"$ErrorActionPreference = 'SilentlyContinue'; $connections = Get-NetTCPConnection -LocalPort 5000; if ($connections) { $connections | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force } }; exit 0\" && nodemon index.js",
+    "build": "node --check index.js",
+    "lint": "node --check index.js controllers/*.js middleware/*.js routes/*.js services/*.js models/*.js migrations/*.js",
+    "test": "node --test ./tests/**/*.test.js"
   },
   "author": "koporov_va",
   "license": "ISC",
@@ -16,6 +19,8 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.3",
+    "express-rate-limit": "^8.4.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",

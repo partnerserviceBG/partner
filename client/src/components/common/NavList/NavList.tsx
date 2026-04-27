@@ -3,6 +3,16 @@ import { NavLink } from 'react-router-dom';
 import { RoutesNavType } from '@utils/types.ts';
 import { useAuth } from '@hooks/useAuth.ts';
 import { useLogoutMutation } from '@services/user.service.ts';
+import { store } from '@store/store.ts';
+import { postsApi } from '@services/post.service.ts';
+import { housesApi } from '@services/house.service.ts';
+import { usersApi } from '@services/user.service.ts';
+import { managementContractsApi } from '@services/management-contracts.service.ts';
+import { meteringDevicesApi } from '@services/metering-devices.service.ts';
+import { organisationInfoApi } from '@services/organisation-info.service.ts';
+import { nsiApi } from '@services/nsi.service.ts';
+import { debtRequestApi } from '@services/debt-request.service.ts';
+import { appealsApi } from '@services/appeals.service.ts';
 import { styled, SxProps, Theme } from '@mui/material';
 
 export interface NavigationLinkProps {
@@ -34,12 +44,14 @@ const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
     },
     '&:hover': {
       opacity: 0.7,
-      '&:not(.active)': {
-        textDecoration: 'underline',
-      },
     },
     '&.active': {
-      opacity: 0.4,
+      opacity: 0.7,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${theme.palette.warning.main}`,
+      outlineOffset: '2px',
+      borderRadius: '4px',
     },
     ...(variant === 'header' && {
       color: theme.palette.primary.main,
@@ -63,14 +75,27 @@ const NavItem = styled(NavLink)<{ variant: Variant }>(({ theme, variant }) => {
   };
 });
 
+const resetApiCaches = () => {
+  store.dispatch(postsApi.util.resetApiState());
+  store.dispatch(housesApi.util.resetApiState());
+  store.dispatch(usersApi.util.resetApiState());
+  store.dispatch(managementContractsApi.util.resetApiState());
+  store.dispatch(meteringDevicesApi.util.resetApiState());
+  store.dispatch(organisationInfoApi.util.resetApiState());
+  store.dispatch(nsiApi.util.resetApiState());
+  store.dispatch(debtRequestApi.util.resetApiState());
+  store.dispatch(appealsApi.util.resetApiState());
+};
+
 export const NavList: React.FC<NavigationLinkProps> = (props) => {
-  const { user, removeAuthData } = useAuth();
+  const { removeAuthData } = useAuth();
   const [logOut] = useLogoutMutation();
 
   const { routes, variant } = props;
-  const handleLogout = () => {
-    logOut(user.id);
+  const handleLogout = async () => {
+    await logOut(undefined);
     removeAuthData();
+    resetApiCaches();
   };
   return (
     <NavRoot {...props}>

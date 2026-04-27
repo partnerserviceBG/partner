@@ -3,7 +3,6 @@ import { UserDto } from '@models/User';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { baseQueryWithReAuth } from '@store/utils/baseQueryAuth';
-import { useLocalStorageByAuth } from '@hooks/useLocalStorageByAuth.ts';
 import { SignInDataType } from '@utils/types.ts';
 
 export const usersApi = createApi({
@@ -19,17 +18,19 @@ export const usersApi = createApi({
       }),
     }),
     logout: build.mutation({
-      query: () => {
-        const { getRefreshToken } = useLocalStorageByAuth();
-        return {
-          url: `/users/logout`,
-          method: 'POST',
-          body: { refreshToken: getRefreshToken() },
-        };
-      },
+      query: () => ({
+        url: `/users/logout`,
+        method: 'POST',
+      }),
       invalidatesTags: [{ type: 'Users' }],
+    }),
+    refresh: build.mutation<UserDto, void>({
+      query: () => ({
+        url: `/users/refresh`,
+        method: 'POST',
+      }),
     }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = usersApi;
+export const { useLoginMutation, useLogoutMutation, useRefreshMutation } = usersApi;

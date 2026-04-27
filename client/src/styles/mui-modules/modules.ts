@@ -1,4 +1,30 @@
+import type { CSSProperties } from 'react';
+
 declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    title: CSSProperties;
+    subtitle: CSSProperties;
+    caption: CSSProperties;
+    p: CSSProperties;
+    border_bottom: CSSProperties;
+    description: CSSProperties;
+    description_large: CSSProperties;
+    date: CSSProperties;
+    tableCell: CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    title?: CSSProperties;
+    subtitle?: CSSProperties;
+    caption?: CSSProperties;
+    p?: CSSProperties;
+    border_bottom?: CSSProperties;
+    description?: CSSProperties;
+    description_large?: CSSProperties;
+    date?: CSSProperties;
+    tableCell?: CSSProperties;
+  }
+
   interface BreakpointOverrides {
     xs: false;
     sm: false;

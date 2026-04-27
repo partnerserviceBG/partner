@@ -84,6 +84,14 @@ const purple = createTheme({
 });
 
 const getStyleOverrides = (theme: Theme) => {
+  const isDarkMode = theme.palette.mode === 'dark';
+  const defaultTextColor = isDarkMode ? theme.palette.primary.light : theme.palette.primary.dark;
+  const secondaryTextColor = isDarkMode ? theme.palette.primary.light : theme.palette.primary.contrastText;
+  const mutedTextColor = isDarkMode ? theme.palette.primary.light : theme.palette.grey['50'];
+  const accentTextColor = isDarkMode ? '#ffb26b' : theme.palette.primary.main;
+  const tableHeaderTextColor = isDarkMode ? theme.palette.primary.light : theme.palette.primary.main;
+  const iconColor = isDarkMode ? theme.palette.primary.light : theme.palette.info.main;
+
   return {
     MuiCssBaseline: {
       styleOverrides: {
@@ -93,7 +101,7 @@ const getStyleOverrides = (theme: Theme) => {
             height: '0.3em'
           },
           '& ::-webkit-scrollbar-track': {
-            '-webkit-box-shadow': theme.palette.info.light
+            WebkitBoxShadow: theme.palette.info.light
           },
           '& ::-webkit-scrollbar-thumb': {
             backgroundColor: theme.palette.info.light,
@@ -108,6 +116,14 @@ const getStyleOverrides = (theme: Theme) => {
     MuiButtonBase: {
       defaultProps: {
         disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          '&:focus-visible': {
+            outline: `2px solid ${theme.palette.warning.main}`,
+            outlineOffset: '2px',
+          },
+        },
       },
     },
     MuiAppBar: {
@@ -158,6 +174,14 @@ const getStyleOverrides = (theme: Theme) => {
       },
     },
     MuiButton: {
+      styleOverrides: {
+        root: {
+          '&:focus-visible': {
+            outline: `2px solid ${theme.palette.warning.main}`,
+            outlineOffset: '2px',
+          },
+        },
+      },
       variants: [
         {
           props: { variant: 'scroll' },
@@ -177,27 +201,63 @@ const getStyleOverrides = (theme: Theme) => {
     MuiTypography: {
       variants: [
         {
-          props: { variant: 'h1' || 'h2' || 'h4' || 'description' || 'description_large' },
+          props: { variant: 'h1' },
           style: {
-            color: `${theme.palette.primary.dark}`,
+            color: defaultTextColor,
+          },
+        },
+        {
+          props: { variant: 'h2' },
+          style: {
+            color: defaultTextColor,
+          },
+        },
+        {
+          props: { variant: 'h4' },
+          style: {
+            color: defaultTextColor,
+          },
+        },
+        {
+          props: { variant: 'description' },
+          style: {
+            color: defaultTextColor,
+          },
+        },
+        {
+          props: { variant: 'description_large' },
+          style: {
+            color: defaultTextColor,
           },
         },
         {
           props: { variant: 'h3' },
           style: {
-            color: `${theme.palette.grey['50']}`,
+            color: mutedTextColor,
           },
         },
         {
-          props: { variant: 'p' || 'subtitle' || 'caption' },
+          props: { variant: 'p' },
           style: {
-            color: `${theme.palette.primary.contrastText}`,
+            color: secondaryTextColor,
+          },
+        },
+        {
+          props: { variant: 'subtitle' },
+          style: {
+            color: secondaryTextColor,
+          },
+        },
+        {
+          props: { variant: 'caption' },
+          style: {
+            color: secondaryTextColor,
           },
         },
         {
           props: { variant: 'date' },
           style: {
-            color: `${theme.palette.primary.main}`,
+            color: accentTextColor,
           },
         },
         {
@@ -220,12 +280,12 @@ const getStyleOverrides = (theme: Theme) => {
             border: `2px solid ${theme.palette.info.light}`,
             height: '56px',
             '&:hover': {
-              color: `${theme.palette.primary.main}`,
-              border: `2px solid ${theme.palette.primary.main}`,
+              color: tableHeaderTextColor,
+              border: `2px solid ${tableHeaderTextColor}`,
             },
             '&.Mui-selected': {
               color: `${theme.palette.primary.light}`,
-              background: `${theme.palette.primary.main}`,
+              background: isDarkMode ? '#6a6a6a' : theme.palette.primary.main,
             },
           }
         }
@@ -241,19 +301,21 @@ const getStyleOverrides = (theme: Theme) => {
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {},
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         body: {
-          // @ts-ignore
-          fontSize: theme.typography['tableCell'].fontSize,
-          // @ts-ignore
-          lineHeight: theme.typography['tableCell'].lineHeight,
-          // @ts-ignore
-          fontWeight: theme.typography['tableCell'].fontWeight,
+          fontSize: theme.typography.tableCell.fontSize,
+          lineHeight: theme.typography.tableCell.lineHeight,
+          fontWeight: theme.typography.tableCell.fontWeight,
           borderBottom: `1px solid ${theme.palette.info.light}`,
           '&.heading': {
             fontSize: theme.typography.h4.fontSize,
-            color: theme.palette.primary.main,
+            color: tableHeaderTextColor,
             fontWeight: 'bold',
             paddingLeft: '30px',
             '&::after': {
@@ -263,24 +325,18 @@ const getStyleOverrides = (theme: Theme) => {
           }
         },
         head: {
-          // @ts-ignore
-          fontSize: theme.typography['tableCell'].fontSize,
-          // @ts-ignore
-          lineHeight: theme.typography['tableCell'].lineHeight,
-          // @ts-ignore
+          fontSize: theme.typography.tableCell.fontSize,
+          lineHeight: theme.typography.tableCell.lineHeight,
           fontWeight: 'bold',
-          color: `${theme.palette.primary.main}`,
+          color: tableHeaderTextColor,
         },
       },
     },
     MuiTableHead: {
       styleOverrides: {
         root: {
-          // @ts-ignore
-          fontSize: theme.typography['tableCell'].fontSize,
-          // @ts-ignore
-          lineHeight: theme.typography['tableCell'].lineHeight,
-          // @ts-ignore
+          fontSize: theme.typography.tableCell.fontSize,
+          lineHeight: theme.typography.tableCell.lineHeight,
           fontWeight: 400,
           borderBottom: `2px solid ${theme.palette.primary.main}`,
         },
@@ -331,14 +387,14 @@ const getStyleOverrides = (theme: Theme) => {
     MuiSvgIcon: {
       styleOverrides: {
         root: {
-          fill: theme.palette.info.main,
+          fill: iconColor,
           '& g': {
-            fill: theme.palette.info.main,
+            fill: iconColor,
           },
           '&:hover': {
-            fill: theme.palette.primary.main,
+            fill: tableHeaderTextColor,
             '& g': {
-              fill: theme.palette.primary.main,
+              fill: tableHeaderTextColor,
             }
           }
         },

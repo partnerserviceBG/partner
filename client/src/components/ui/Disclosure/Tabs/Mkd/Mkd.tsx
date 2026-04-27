@@ -1,9 +1,19 @@
-import { FC } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useGetHousesQuery } from '@services/house.service.ts';
 import { Container } from '@components/common';
-import { styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import {
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import { getShortAddress } from '@utils/utils.ts';
+import { HouseFilter, HouseFilterOption } from '@components/share/house-filter/HouseFilter.tsx';
+import { EmptyState, ErrorState } from '@components/share/view-state/ViewState.tsx';
 
 const NavItem = styled(NavLink)(({ theme }) => {
   return {
@@ -42,10 +52,67 @@ const headCells = [
   },
 ];
 export const Mkd: FC = () => {
-  const { data } = useGetHousesQuery();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data, error } = useGetHousesQuery();
+  const houses = (data || []).filter((house) => house?.id && house?.full_address);
+  const [selectedHouseId, setSelectedHouseId] = useState<string | null>(
+    searchParams.get('houseId'),
+  );
+  const houseOptions: HouseFilterOption[] = useMemo(() => {
+    return houses.map((house) => ({
+      id: String(house.id),
+      label: getShortAddress(house.full_address) || String(house.id),
+    }));
+  }, [houses]);
+  const filteredHouses = useMemo(() => {
+    if (!selectedHouseId) {
+      return houses;
+    }
+    return houses.filter((house) => String(house.id) === selectedHouseId);
+  }, [houses, selectedHouseId]);
+  const formatNumber = (value: number | string | undefined): string => {
+    const num = Number(value);
+    return Number.isFinite(num) ? num.toString() : ' - ';
+  };
+  const formatArea = (value: string | number | undefined): string => {
+    const num = Number(value);
+    return Number.isFinite(num) ? num.toFixed(1) : ' - ';
+  };
+
+  useEffect(() => {
+    setSelectedHouseId(searchParams.get('houseId'));
+  }, [searchParams]);
+
+  const handleHouseFilterChange = (houseId: string | null) => {
+    setSelectedHouseId(houseId);
+    setSearchParams((prevParams) => {
+      const nextParams = new URLSearchParams(prevParams);
+      if (houseId) {
+        nextParams.set('houseId', houseId);
+      } else {
+        nextParams.delete('houseId');
+      }
+      return nextParams;
+    });
+  };
 
   return (
     <Container>
+      <HouseFilter
+        options={houseOptions}
+        selectedHouseId={selectedHouseId}
+        onChange={handleHouseFilterChange}
+      />
+      {error ? (
+        <ErrorState
+          title='Не удалось загрузить список МКД'
+          description='Попробуйте обновить страницу.'
+        />
+      ) : null}
+      {!error && filteredHouses.length === 0 ? (
+        <EmptyState title='МКД не найдены' />
+      ) : null}
+      {!error && filteredHouses.length > 0 ? (
       <TableContainer >
         <Table  size='small'>
         <TableHead>
@@ -56,23 +123,23 @@ export const Mkd: FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data &&
-            data.map((el) => {
+          {filteredHouses.map((el) => {
               return (
                 <TableRow key={el.id}>
                   <TableCell>{<NavItem to={`/houses/${el.id}`}>{getShortAddress(el.full_address)}</NavItem>}</TableCell>
-                  <TableCell align='left'>{el.floor_count}</TableCell>
-                  <TableCell align='left'>{el.entrances.length || 0}</TableCell>
-                  <TableCell align='left'>{el.premises.length || 0}</TableCell>
-                  <TableCell align='left'>{el.cadastral_number}</TableCell>
-                  <TableCell align='left'>{parseFloat(el.total_square).toFixed(1)}</TableCell>
-                  <TableCell align='left'>{el.used_year}</TableCell>
+                  <TableCell align='left'>{formatNumber(el.floor_count)}</TableCell>
+                  <TableCell align='left'>{el.entrances?.length ?? ' - '}</TableCell>
+                  <TableCell align='left'>{el.premises?.length ?? ' - '}</TableCell>
+                  <TableCell align='left'>{el.cadastral_number || ' - '}</TableCell>
+                  <TableCell align='left'>{formatArea(el.total_square)}</TableCell>
+                  <TableCell align='left'>{formatNumber(el.used_year)}</TableCell>
                 </TableRow>
               );
             })}
         </TableBody>
         </Table>
       </TableContainer>
+      ) : null}
     </Container>
   );
 };

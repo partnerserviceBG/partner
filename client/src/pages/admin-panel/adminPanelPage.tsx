@@ -16,8 +16,7 @@ export const AdminPanelPage: FC = (): ReactNode => {
   const [value, setValue] = useState(0);
 
   const pathName = location.pathname.split('/')[2]
-  // @ts-ignore
-  const handleChange = (event: SyntheticEvent, index: number, path: string) => {
+  const handleChange = (_event: SyntheticEvent, index: number, path: string) => {
     if(index !== value) {
       setValue(index);
       navigate(path)
