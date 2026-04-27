@@ -8,9 +8,9 @@ import {
   TablePagination,
   TableRow, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
+import { TablePaginationProps } from '@mui/material/TablePagination';
 import { Container } from '@components/common';
 import { useGetPostsQuery } from '@services/post.service.ts';
-import { Progress } from '@components/share/progress/Progress.tsx';
 import { NewsItem } from '@components/ui/News/news-item/NewsItem.tsx';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
@@ -20,6 +20,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { AddOrEditModal } from '@components/ui/Admin-panel/NewsPanel/News/AddOrEdit/AddOrEditModal.tsx';
 import { DeleteNewsModal } from '@components/ui/Admin-panel/NewsPanel/News/Delete/DeleteNewsModal.tsx';
 import { Outlet } from 'react-router-dom';
+import { EmptyState } from '@components/share/view-state/ViewState.tsx';
+import { SkeletonState } from '@components/share/skeleton/SkeletonState.tsx';
 
 export const NewsPanel: FC = () => {
   const { data, isLoading } = useGetPostsQuery();
@@ -53,13 +55,12 @@ export const NewsPanel: FC = () => {
 
   useEffect(() => {
     if (data) {
-      setNewsData(data);
+      setNewsData(data.items);
       setSearch('')
     }
   }, [data]);
 
-  // @ts-ignore
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage: TablePaginationProps['onPageChange'] = (_, newPage) => {
     setPage(newPage);
   };
 
@@ -70,20 +71,20 @@ export const NewsPanel: FC = () => {
 
   useEffect(() => {
     if (search) {
-      const searchData = data?.filter((el) => el.title?.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+      const searchData = data?.items.filter((el) => el.title?.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
       setNewsData(searchData);
     } else {
-      setNewsData(data);
+      setNewsData(data?.items);
     }
   }, [search]);
 
   return <Container>
-    {isLoading ? <Progress /> :
+    {isLoading ? <SkeletonState rows={3} withImage minHeight={420} /> :
       <>
         <AddOrEditModal open={openAddModal} setOpen={setOpenAddModal} />
         <DeleteNewsModal news={news} open={openDeleteModal} setOpen={setOpenDeleteModal} />
         <AddOrEditModal news={news} open={openEditModal} setOpen={setOpenEditModal} />
-        <TableContainer>
+        <TableContainer sx={{ overflowX: 'auto' }}>
           <Box sx={{
             marginBottom: '10px',
             display: 'flex',
@@ -124,7 +125,7 @@ export const NewsPanel: FC = () => {
           </Box>
           <Table size='small'>
             <TableBody>
-              {newsData && (rowsPerPage > 0
+              {newsData && newsData.length > 0 && (rowsPerPage > 0
                 ? newsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : newsData).map((news) => {
                 return (
@@ -144,6 +145,12 @@ export const NewsPanel: FC = () => {
               })}
             </TableBody>
           </Table>
+          {newsData?.length === 0 ? (
+            <EmptyState
+              title='Новости не найдены'
+              description='Измени критерий поиска или добавь новую новость.'
+            />
+          ) : null}
         </TableContainer>
       </>
     }

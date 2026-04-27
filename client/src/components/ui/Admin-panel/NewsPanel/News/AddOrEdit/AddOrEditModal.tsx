@@ -28,43 +28,74 @@ const newPost: Partial<Post> = {
 export const AddOrEditModal: FC<NewsPanelUtilsModalProps> = ({ open, setOpen, news }) => {
 
   const { data, isLoading } = useGetHousesQuery();
-  const [ addPost ] = useAddPostMutation();
-  const [ updatePost ] = useUpdatePostMutation();
+  const [ addPost, { isLoading: isAdding } ] = useAddPostMutation();
+  const [ updatePost, { isLoading: isUpdating } ] = useUpdatePostMutation();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState<File | null>(null);
+  const isSubmitting = isAdding || isUpdating;
   const handleClose = () => {
     setOpen(false);
     setFile(null)
   };
 
-  const handleChangeFile = (file: File | null, setFieldValue: Function) => {
-    setFile(file);
-    setFieldValue('image', file)
+  const handleChangeFile = (
+    nextFile: File | null,
+    setFieldValue: (field: string, value: unknown) => void
+  ) => {
+    setFile(nextFile);
+    setFieldValue('image', nextFile)
+  };
+
+  const getHouseLabel = (housesId: Post['housesId'] | undefined): string => {
+    if (Array.isArray(housesId) && housesId.length > 1) {
+      return 'Дома';
+    }
+    return 'Дом';
   };
 
   const getDefaultValue = () => {
       return data?.filter((el) => news?.housesId?.includes(el.id as string)).map((el) => getShortAddress(el.full_address))
   }
 
-  const onSubmit = (values: Partial<Post>) => {
+  const validate = (values: Partial<Post>) => {
+    const errors: Partial<Record<keyof Post, string>> = {};
+    if (!values.title || !values.title.trim()) {
+      errors.title = 'Введите заголовок';
+    }
+    return errors;
+  };
+
+  const onSubmit = async (values: Partial<Post>) => {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, Array.isArray(value) ?  value.join(',') : value as string)
-    })
-    if(news?.id) {
-      formData.append('id', news.id as string)
-      updatePost(formData).then((data) => {
-        enqueueSnackbar(` ${data ? "Новость отредактирована." : 'Ошибка редактирования.' } `, { autoHideDuration: 2000, variant: data ? 'success' : 'error', anchorOrigin: {vertical: 'top', horizontal: 'right'}});
-      })
-
-    } else {
-      addPost(formData).then((data) => {
-        enqueueSnackbar(` ${data ? "Новость Добавлена." : 'Ошибка добавления.' } `, { autoHideDuration: 2000, variant: data ? 'success' : 'error', anchorOrigin: {vertical: 'top', horizontal: 'right'}});
-      })
-
+      formData.append(key, Array.isArray(value) ?  value.join(',') : value as string);
+    });
+    try {
+      if(news?.id) {
+        formData.append('id', news.id as string);
+        await updatePost(formData).unwrap();
+        enqueueSnackbar('Новость отредактирована.', {
+          autoHideDuration: 2000,
+          variant: 'success',
+          anchorOrigin: {vertical: 'top', horizontal: 'right'},
+        });
+      } else {
+        await addPost(formData).unwrap();
+        enqueueSnackbar('Новость добавлена.', {
+          autoHideDuration: 2000,
+          variant: 'success',
+          anchorOrigin: {vertical: 'top', horizontal: 'right'},
+        });
+      }
+      handleClose();
+    } catch {
+      enqueueSnackbar(news?.id ? 'Ошибка редактирования.' : 'Ошибка добавления.', {
+        autoHideDuration: 2000,
+        variant: 'error',
+        anchorOrigin: {vertical: 'top', horizontal: 'right'},
+      });
     }
-    handleClose()
-  }
+  };
 
   return <Dialog
     open={open}
@@ -78,9 +109,10 @@ export const AddOrEditModal: FC<NewsPanelUtilsModalProps> = ({ open, setOpen, ne
       </DialogContentText>
       <Formik
         initialValues={news ? news : newPost}
+        validate={validate}
         onSubmit={onSubmit}
       >
-        {({ values, handleChange, setFieldValue }) => (
+        {({ values, errors, touched, handleChange, setFieldValue }) => (
           <Form>
             <TextField
               variant='outlined'
@@ -91,6 +123,8 @@ export const AddOrEditModal: FC<NewsPanelUtilsModalProps> = ({ open, setOpen, ne
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(touched.title && errors.title)}
+              helperText={touched.title && errors.title ? errors.title : ''}
               minRows={1}
               maxRows={3}
               multiline
@@ -126,8 +160,7 @@ export const AddOrEditModal: FC<NewsPanelUtilsModalProps> = ({ open, setOpen, ne
                 <TextField
                   {...params}
                   fullWidth
-                  // @ts-ignore
-                  label={values?.housesId?.length > 1 ? 'Дома' : 'Дом'}
+                  label={getHouseLabel(values?.housesId)}
                   placeholder='Выберите дом(а)'
                   InputProps={{
                     ...params.InputProps,
@@ -161,8 +194,10 @@ export const AddOrEditModal: FC<NewsPanelUtilsModalProps> = ({ open, setOpen, ne
                           }}
             />
             <DialogActions>
-              <Button onClick={handleClose}>Отменить</Button>
-              <Button type='submit'>Сохранить</Button>
+              <Button onClick={handleClose} disabled={isSubmitting}>Отменить</Button>
+              <Button type='submit' disabled={isSubmitting}>
+                {isSubmitting ? 'Сохранение...' : 'Сохранить'}
+              </Button>
             </DialogActions>
           </Form>
         )}

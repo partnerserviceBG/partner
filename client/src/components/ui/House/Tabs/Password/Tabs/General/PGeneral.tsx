@@ -122,19 +122,19 @@ export const PGeneral: FC<PGeneralProps> = ({ data }) => {
             </TableRow>
             <TableRow>
               {<TableCell>{'Архив'}</TableCell>}
-              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState.archived ? 'Да' : 'Нет'}`}</TableCell>}
+              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState?.archived ? 'Да' : 'Нет'}`}</TableCell>}
             </TableRow>
             <TableRow>
               {<TableCell>{'Актуальная запись'}</TableCell>}
-              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState.is_actual ? 'Да' : 'Нет'}`}</TableCell>}
+              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState?.is_actual ? 'Да' : 'Нет'}`}</TableCell>}
             </TableRow>
             <TableRow>
               {<TableCell>{'Дата и время последнего обновления записи в ГИС ЖКХ'}</TableCell>}
-              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState.modified || ' - ' }`}</TableCell>}
+              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState?.modified || ' - ' }`}</TableCell>}
             </TableRow>
             <TableRow>
               {<TableCell>{'Наименование состояние дома'}</TableCell>}
-              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState.name || ' - ' }`}</TableCell>}
+              {<TableCell sx={{ fontWeight: 'bold' }}>{`${objectState?.name || ' - ' }`}</TableCell>}
             </TableRow>
           </TableBody>
         );

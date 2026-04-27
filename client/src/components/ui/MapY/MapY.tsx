@@ -21,6 +21,12 @@ export interface MapYProps {
   height?: number;
   onPlacemarkYClick?: (house?: House) => void;
 }
+
+interface MapWithBehaviors {
+  behaviors?: {
+    disable: (behaviorName: string) => void;
+  };
+}
 export const MapY: FC<MapYProps> = ({ onLoadGeoMap, height, data, house, zoom = 17, onPlacemarkYClick }): ReactNode => {
   return (
     <YMaps
@@ -37,8 +43,10 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, height, data, house, zoom = 
           zoom,
         }}
         instanceRef={(ref) => {
-          // @ts-ignore
-          ref && ref.behaviors.disable('scrollZoom');
+          const mapRef = ref as MapWithBehaviors | null;
+          if (mapRef?.behaviors) {
+            mapRef.behaviors.disable('scrollZoom');
+          }
         }}
         modules={['geocode']}
         onLoad={onLoadGeoMap}
@@ -50,18 +58,8 @@ export const MapY: FC<MapYProps> = ({ onLoadGeoMap, height, data, house, zoom = 
             position: { top: 10, left: 10 },
           }}
         />
-        <TrafficControl
-          options={{
-            // @ts-ignore
-            float: 'right',
-          }}
-        />
-        <TypeSelector
-          options={{
-            // @ts-ignore
-            float: 'right',
-          }}
-        />
+        <TrafficControl />
+        <TypeSelector />
         {data ? (
           data.map((el) => (
             <PlacemarkY

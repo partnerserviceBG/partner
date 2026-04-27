@@ -25,7 +25,7 @@ export const HControl: FC<HControlProps> = ({ data }) => {
         })}
       </Tabs>
       <TabPanel index={0} value={tabIndex}>
-        <CContracts contractId={data?.managementContracts[0].id} />
+        <CContracts contractId={data?.managementContracts?.[0]?.id} />
       </TabPanel>
     </Container>
   );

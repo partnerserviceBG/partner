@@ -21,13 +21,23 @@ export const DeleteNewsModal:FC<NewsPanelUtilsModalProps> = ({open, setOpen, new
     setOpen(false);
   };
 
-  const handleDeleteNews = (): void => {
+  const handleDeleteNews = async (): Promise<void> => {
     if(news) {
-      deleteNews(news.id as number).then((data) => {
+      try {
+        await deleteNews(news.id as number).unwrap();
         setOpen(false);
-        // @ts-ignore
-        enqueueSnackbar(` ${!data.error ? "Новость удалена." : 'Ошибка удаления.' } `, { autoHideDuration: 2000, variant: !data.error ? 'success' : 'error', anchorOrigin: {vertical: 'top', horizontal: 'right'}});
-      })
+        enqueueSnackbar(' Новость удалена. ', {
+          autoHideDuration: 2000,
+          variant: 'success',
+          anchorOrigin: {vertical: 'top', horizontal: 'right'}
+        });
+      } catch {
+        enqueueSnackbar(' Ошибка удаления. ', {
+          autoHideDuration: 2000,
+          variant: 'error',
+          anchorOrigin: {vertical: 'top', horizontal: 'right'}
+        });
+      }
     }
   }
 

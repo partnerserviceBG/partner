@@ -4,12 +4,13 @@ const ApiError = require("../error/api-error");
 
 class MeteringDevicesController {
   async getAll(req, res, next) {
+    const accessToken = process.env.RIAS_ACCESS_TOKEN;
     await axios
       .get("https://api.rias-gkh.ru/v2.0/metering-devices", {
         params: {
           expand: "errors, premise, room, houseOwnership, resources, resources.municipalResource, readings, verificationInterval",
           limit: '1000',
-          "access-token": "a4a6a69cd5e5506fa64d",
+          "access-token": accessToken,
         },
       })
       .then((response) => {
@@ -22,10 +23,11 @@ class MeteringDevicesController {
   }
 
   async getOne(req, res) {
+    const accessToken = process.env.RIAS_ACCESS_TOKEN;
     await axios
       .get(`https://api.rias-gkh.ru/v2.0/metering-devices/${req.params.id}`, {
         params: {
-          "access-token": "a4a6a69cd5e5506fa64d",
+          "access-token": accessToken,
           expand: "errors, premise, room, houseOwnership, resources, resources.municipalResource, readings, verificationInterval",
         },
       })

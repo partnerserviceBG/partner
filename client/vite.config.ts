@@ -8,6 +8,18 @@ import svgr from 'vite-plugin-svgr';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          rtk: ['@reduxjs/toolkit', 'react-redux'],
+          maps: ['@pbe/react-yandex-maps'],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, 'src/components'),

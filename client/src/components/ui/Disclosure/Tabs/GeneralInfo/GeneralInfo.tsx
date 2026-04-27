@@ -1,7 +1,5 @@
 import { FC } from 'react';
 import { Box, Container, Grid, Link, styled, Typography } from '@mui/material';
-// @ts-ignore
-import Info from '@images/svg/info.svg?react';
 import { useGetInfoQuery, useGetScheduleCompanyQuery } from '@services/organisation-info.service.ts';
 import { getShortAddress } from '@utils/utils.ts';
 import { StyledSvgIconBox } from '@components/share/styled-box-by-icon/StyledBoxByIcon.tsx';
@@ -29,7 +27,7 @@ export const GeneralInfo: FC = () => {
         {'Управляющий организацией'}
       </Typography>
       <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '40px'}} >
-        <StyledSvgIconBox component={Info}/>
+        <StyledSvgIconBox iconSrc='/images/svg/info.svg' iconAlt='Информация' />
         <Typography sx={{ marginLeft: '60px' }} variant='h2'>
           {info && info['director'].value}
         </Typography>

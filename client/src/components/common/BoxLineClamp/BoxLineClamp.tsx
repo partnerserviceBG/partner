@@ -14,8 +14,8 @@ export const BoxLineClamp: FC<BoxOwnProps & BoxLineClampProps> = ({children, sx,
     textOverflow: 'ellipsis',
     wordBreak: 'break-all',
     display: '-webkit-box',
-    '-webkit-line-clamp': lineClamp ? `${lineClamp}` : '2',
-    '-webkit-box-orient': 'vertical',
+    WebkitLineClamp: lineClamp ? `${lineClamp}` : '2',
+    WebkitBoxOrient: 'vertical',
     ...sx
   }}>
     {children}

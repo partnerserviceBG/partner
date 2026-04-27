@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -30,11 +31,16 @@ const NavItem = styled(NavLink)(({ theme }) => {
 interface NewsItemProps {
   news: Post;
   large?: boolean;
+  houses?: Array<{
+    id: string;
+    label: string;
+  }>;
 }
 
-export const NewsItem: FC<NewsItemProps> = ({ news, large }) => {
-  const theme = useTheme()
+export const NewsItem: FC<NewsItemProps> = ({ news, large, houses }) => {
+  const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('tablet'));
+  const imagePath = (news.image || 'Images/default_news_img.jpg').replace(/\\/g, '/');
 
   const getDefaultParam = (): CSSObject => {
     return {
@@ -47,8 +53,14 @@ export const NewsItem: FC<NewsItemProps> = ({ news, large }) => {
       <CardActionArea component={NavLink} to={`${news.id}`}  sx={{ ...getDefaultParam() }}>
         <CardMedia
           component="img"
-          sx={{...getDefaultParam(), marginRight: '30px', position: 'relative' }}
-          image={`${environments.imageUrl}${news.image}`}
+          sx={{
+            ...getDefaultParam(),
+            marginRight: '30px',
+            position: 'relative',
+            objectFit: 'contain',
+            backgroundColor: theme.palette.background.default,
+          }}
+          image={`${environments.imageUrl}${imagePath}`}
           alt={`${news.title}`}
         />
      </CardActionArea>
@@ -64,6 +76,19 @@ export const NewsItem: FC<NewsItemProps> = ({ news, large }) => {
           <BoxLineClamp component={Typography} lineClamp={2} sx={{marginBottom: '10px'}} variant={large ? 'description_large' : 'description'}>
             {news.content}
           </BoxLineClamp>
+          {houses && houses.length > 0 ? (
+            <Box>
+              <Typography component='span' variant='description' sx={{ fontWeight: 700 }}>
+                Дом:{' '}
+              </Typography>
+              {houses.map((house, index) => (
+                <Typography component='span' variant='description' key={house.id}>
+                  <NavItem to={`/houses/${house.id}`}>{house.label}</NavItem>
+                  {index < houses.length - 1 ? '; ' : ''}
+                </Typography>
+              ))}
+            </Box>
+          ) : null}
         </CardContent>
     </Card>
   );

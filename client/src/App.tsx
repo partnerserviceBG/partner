@@ -16,6 +16,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem(ThemeStorageKey, theme);
   }, [theme]);
+
   return (
     <>
       <AppThemeContext.Provider

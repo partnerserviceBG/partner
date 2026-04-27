@@ -13,6 +13,7 @@ export const BreadCrumbs = () => {
   const location = useLocation();
   const { data: houses } = useGetHousesQuery();
   const { data: news } = useGetPostsQuery();
+  const newsItems = news?.items || [];
   const pathNames = location.pathname.split(/[/]/).filter((x) => x);
 
   const navigationPath: RoutesNavType[] = [...publicNavigation, ...privateNavigation, ...publicInfoNavigation];
@@ -22,9 +23,9 @@ export const BreadCrumbs = () => {
     const getPathById = () => {
       switch (pathNames[0]) {
         case 'news':
-          return news?.find((el) => el.id  === Number(path))?.title;
+          return newsItems.find((el) => el.id  === Number(path))?.title;
         case 'admin':
-          return news?.find((el) => el.id === Number(path))?.title;
+          return newsItems.find((el) => el.id === Number(path))?.title;
         case 'houses':
           return getShortAddress(houses?.find((el) => el.id === Number(path))?.full_address);
       }

@@ -6,16 +6,12 @@ export const ScrollToButton: FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    window.addEventListener('scroll', (event) => {
-      //@ts-ignore
-      if (event.currentTarget?.pageYOffset >= 195) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-    });
+    const handleScroll = () => {
+      setVisible(window.scrollY >= 195);
+    };
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', () => {});
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 

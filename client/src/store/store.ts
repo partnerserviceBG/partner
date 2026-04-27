@@ -8,6 +8,7 @@ import { organisationInfoApi } from '@services/organisation-info.service.ts';
 import { nsiApi } from '@services/nsi.service.ts';
 import { debtRequestApi } from '@services/debt-request.service.ts';
 import { appealsApi } from '@services/appeals.service.ts';
+import { apiErrorMiddleware } from '@store/middleware/api-error.middleware.ts';
 
 const rootReducer = combineReducers({
   [postsApi.reducerPath]: postsApi.reducer,
@@ -23,7 +24,12 @@ const rootReducer = combineReducers({
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
+    getDefaultMiddleware({
+      serializableCheck: {
+        warnAfter: 128,
+      },
+    }).concat(
+      apiErrorMiddleware,
       postsApi.middleware,
       housesApi.middleware,
       usersApi.middleware,

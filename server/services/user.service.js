@@ -7,13 +7,13 @@ const { verify } = require("jsonwebtoken");
 
 class UserService {
   async login(email, password) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
     if (!user) {
-      throw ApiError.badRequest("Пользователь с таким email не найден");
+      throw ApiError.badRequest("Неверный email или пароль");
     }
     const isPassEquals = await bcrypt.compare(password, user.password);
     if (!isPassEquals) {
-      throw ApiError.badRequest("Неверный пароль");
+      throw ApiError.badRequest("Неверный email или пароль");
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
@@ -23,6 +23,9 @@ class UserService {
   }
 
   async logout(refreshToken) {
+    if (!refreshToken) {
+      return 0;
+    }
     return await tokenService.removeToken(refreshToken);
   }
 
@@ -35,10 +38,6 @@ class UserService {
     if (!userData || !tokenFromDb) {
       throw ApiError.unauthorized();
     }
-    if (!tokenService.validateRefreshToken(refreshToken)) {
-      return ApiError.forbidden();
-    }
-
     const user = await User.findByPk(userData.id);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
@@ -55,10 +54,10 @@ class UserService {
     const email = "52partner@rambler.ru";
     const password = "partner-service";
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ where: { email } });
 
     if (!existingUser) {
-      await User.create({ email, password });
+      await User.create({ email, password, role: "admin" });
     }
   }
 }
